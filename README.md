@@ -77,6 +77,10 @@ docker run -p 3000:3000 mindspace
 - [ ] Phase 2: Memory Garden (Planned)
 - [ ] Phase 3: Bloom + Action (Planned)
 
+
+## This is a solo project.
+## No features, documentation, or setup steps are required for collaborators or team onboarding.
+
 ## 🤝 Contributing
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 

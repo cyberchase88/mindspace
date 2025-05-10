@@ -125,3 +125,7 @@
 - First contentful paint: < 1.5s
 - Lighthouse score: > 90
 - Bundle size: < 200KB (initial load)
+
+
+## This is a solo project.
+## No features, documentation, or setup steps are required for collaborators or team onboarding.
