@@ -4,6 +4,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: #f5f6fa;
   padding: 2rem 0;
+  /* Soft dawn sky gradient */
+  background: linear-gradient(135deg, #e0f7fa 0%, #fceabb 100%);
+  font-family: 'Nunito', 'Geist', Arial, sans-serif;
+}
+
+.gardenHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 2rem 0 1rem 0;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.55);
+  box-shadow: 0 4px 24px 0 rgba(120,200,180,0.08);
+}
+
+.gardenHeader h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3a5a40;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+.gardenSubhead {
+  font-size: 1.25rem;
+  color: #5e7c6a;
+  font-weight: 400;
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: inherit;
 } 

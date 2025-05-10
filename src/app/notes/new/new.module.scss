@@ -1,0 +1,146 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.titleInput {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1.5rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-color);
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--primary-color);
+  }
+
+  &::placeholder {
+    color: #666;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.previewButton {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+  }
+}
+
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--primary-color-dark);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.lastSaved {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.editor {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background-color);
+  min-height: 500px;
+
+  :global {
+    .w-md-editor {
+      background-color: var(--background-color);
+    }
+
+    .w-md-editor-text-pre > code,
+    .w-md-editor-text-input {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+
+    .w-md-editor-preview {
+      background-color: var(--background-color);
+      padding: 1rem;
+      color: var(--text-color);
+    }
+  }
+}
+
+.success {
+  padding: 0.75rem;
+  background-color: #e0ffe0;
+  color: #207520;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.backButton {
+  margin-right: 1.5rem;
+  color: var(--primary-color-dark);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+} 

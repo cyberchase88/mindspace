@@ -1,50 +1,141 @@
 .notesList {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
-  
+  background: rgba(255,255,255,0.7);
+  border-radius: 24px;
+  box-shadow: 0 4px 32px 0 rgba(120,200,180,0.10);
+  font-family: 'Nunito', 'Geist', Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
   h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 1.7rem;
+    color: #3a5a40;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    font-family: inherit;
   }
+}
+
+.newButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #b7e4c7 0%, #fceabb 100%);
+  color: #3a5a40;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 8px 0 rgba(120,200,180,0.08);
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+
+  &:hover {
+    background: linear-gradient(90deg, #fceabb 0%, #b7e4c7 100%);
+    color: #588157;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(232,245,233,0.7);
+  border: 2px dashed #b7e4c7;
+  border-radius: 16px;
+  color: #5e7c6a;
+  font-size: 1.2rem;
+  font-family: inherit;
+  margin-top: 2rem;
+}
+
+.empty:before {
+  content: '🌱 ';
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
 }
 
 .noteCard {
-  padding: 1.5rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  display: block;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  background: linear-gradient(135deg, #f3ffe3 0%, #e0f7fa 100%);
+  border: 1.5px solid #b7e4c7;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px 0 rgba(120,200,180,0.10);
+  color: #222;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  font-family: inherit;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 32px 0 rgba(120,200,180,0.18);
+    border-color: #95d5b2;
   }
 
   h3 {
-    margin: 0 0 0.5rem;
-    color: #1a1a1a;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #3a5a40;
+    font-weight: 700;
+    font-family: inherit;
   }
 
-  p {
-    margin: 0;
-    color: #666;
+  .preview {
+    color: #588157;
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+    font-family: inherit;
+  }
+
+  .date {
     font-size: 0.9rem;
+    color: #a3b18a;
+    font-family: inherit;
   }
 }
 
 .loading {
-  padding: 2rem;
   text-align: center;
+  padding: 2rem;
   color: #666;
 }
 
 .error {
-  padding: 2rem;
-  text-align: center;
+  padding: 1rem;
+  background-color: #fee2e2;
   color: #dc2626;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--primary-color-dark);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 } 

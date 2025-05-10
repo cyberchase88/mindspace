@@ -8,4 +8,20 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey); 
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+/**
+ * Inserts a new note into the notes table.
+ * @param {string} title - The title of the note.
+ * @param {string} content - The content of the note.
+ * @returns {Promise<object>} The inserted note or error.
+ */
+export async function createNote(title, content) {
+  const { data, error } = await supabase
+    .from('notes')
+    .insert([{ title, content }])
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+} 
