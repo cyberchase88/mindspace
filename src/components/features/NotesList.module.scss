@@ -1,5 +1,6 @@
 .notesList {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
   background: rgba(255,255,255,0.7);
@@ -13,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  animation: floatIn 1s ease-out;
 
   h2 {
     font-size: 1.7rem;
@@ -31,12 +33,14 @@
   font-weight: 600;
   border: none;
   box-shadow: 0 2px 8px 0 rgba(120,200,180,0.08);
-  transition: background 0.2s, color 0.2s;
+  transition: all 0.3s ease;
   font-family: inherit;
 
   &:hover {
     background: linear-gradient(90deg, #fceabb 0%, #b7e4c7 100%);
     color: #588157;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px 0 rgba(120,200,180,0.15);
   }
 }
 
@@ -50,6 +54,7 @@
   font-size: 1.2rem;
   font-family: inherit;
   margin-top: 2rem;
+  animation: bloom 0.8s ease-out;
 }
 
 .empty:before {
@@ -59,10 +64,21 @@
   margin-bottom: 0.5rem;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+// Masonry styles for react-masonry-css
+.masonryGrid {
+  display: flex;
+  margin-left: -2rem; /* gutter size offset */
+  width: auto;
+}
+
+.masonryColumn {
+  padding-left: 2rem; /* gutter size */
+  background-clip: padding-box;
+
+  /* Space between cards vertically */
+  & > .noteCard {
+    margin-bottom: 2rem;
+  }
 }
 
 .noteCard {
@@ -73,12 +89,20 @@
   border-radius: 20px;
   box-shadow: 0 2px 16px 0 rgba(120,200,180,0.10);
   color: #222;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
+  animation: bloom 0.6s ease-out;
+  animation-fill-mode: both;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
 
   &:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 8px 32px 0 rgba(120,200,180,0.18);
+    transform: translateY(-8px) rotate(1deg);
+    box-shadow: 0 12px 32px 0 rgba(120,200,180,0.18);
     border-color: #95d5b2;
   }
 
@@ -105,10 +129,45 @@
   }
 }
 
+// Size-specific styles
+.small {
+  font-size: 1rem;
+  min-height: 80px;
+  max-width: 320px;
+  transform: rotate(-1deg);
+  
+  &:hover {
+    transform: translateY(-8px) rotate(0deg);
+  }
+}
+
+.medium {
+  font-size: 1.08rem;
+  min-height: 160px;
+  max-width: 360px;
+  transform: rotate(1deg);
+  
+  &:hover {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+.large {
+  font-size: 1.12rem;
+  min-height: 240px;
+  max-width: 420px;
+  transform: rotate(-2deg);
+  
+  &:hover {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+}
+
 .loading {
   text-align: center;
   padding: 2rem;
   color: #666;
+  animation: floatIn 0.8s ease-out;
 }
 
 .error {
@@ -117,6 +176,7 @@
   color: #dc2626;
   border-radius: 4px;
   text-align: center;
+  animation: floatIn 0.8s ease-out;
 }
 
 .saveButton {
@@ -137,5 +197,27 @@
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
   }
 } 

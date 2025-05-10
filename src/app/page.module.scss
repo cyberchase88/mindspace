@@ -17,6 +17,7 @@
   border-radius: 24px;
   background: rgba(255,255,255,0.55);
   box-shadow: 0 4px 24px 0 rgba(120,200,180,0.08);
+  animation: floatIn 1.2s ease-out;
 }
 
 .gardenHeader h1 {
@@ -35,4 +36,26 @@
   margin: 0 auto;
   max-width: 500px;
   font-family: inherit;
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
 } 
