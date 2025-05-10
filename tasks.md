@@ -43,6 +43,7 @@
 - [ ] Configure development environment
   - Note: Project will NOT use Tailwind CSS
   - Will use regular CSS/SCSS for styling
+  - Using JavaScript (not TypeScript)
 - [ ] Set up Docker configuration
 - [ ] Implement basic routing
 - [ ] Set up state management
