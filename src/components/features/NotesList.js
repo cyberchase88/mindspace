@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Masonry from 'react-masonry-css';
 import styles from './NotesList.module.scss';
 import DOMPurify from 'dompurify';
+import { marked } from 'marked';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -25,9 +26,9 @@ const getNoteSize = (content) => {
   return 'large';
 };
 
-// Function to truncate content to 2 lines or ~150 characters
+// Function to truncate content to 3 lines or ~200 characters
 const truncateContent = (content) => {
-  const maxLength = 150;
+  const maxLength = 200;
   const truncated = content.substring(0, maxLength);
   return truncated.length < content.length ? truncated + '...' : truncated;
 };
@@ -69,6 +70,9 @@ export default function NotesList() {
         >
           {notes.map(note => {
             const size = getNoteSize(note.content);
+            const previewContent = truncateContent(note.content);
+            const renderedPreview = marked(previewContent);
+            
             return (
               <Link 
                 href={`/notes/${note.id}`} 
@@ -76,15 +80,15 @@ export default function NotesList() {
                 className={`${styles.noteCard} ${styles[size]}`}
               >
                 <h3>{note.title}</h3>
-                <p className={styles.preview}
+                <div 
+                  className={styles.preview}
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(truncateContent(note.content))
+                    __html: DOMPurify.sanitize(renderedPreview)
                   }}
                 />
                 <time className={styles.date}>
                   {new Date(note.created_at).toLocaleDateString()}
                 </time>
-                <span className={styles.label}>Unlabeled</span>
               </Link>
             );
           })}
