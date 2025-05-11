@@ -25,6 +25,13 @@ const getNoteSize = (content) => {
   return 'large';
 };
 
+// Function to truncate content to 2 lines or ~150 characters
+const truncateContent = (content) => {
+  const maxLength = 150;
+  const truncated = content.substring(0, maxLength);
+  return truncated.length < content.length ? truncated + '...' : truncated;
+};
+
 const breakpointColumnsObj = {
   default: 4,
   1100: 3,
@@ -70,16 +77,14 @@ export default function NotesList() {
               >
                 <h3>{note.title}</h3>
                 <p className={styles.preview}
-                  // Render sanitized HTML preview to prevent XSS
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(
-                      note.content.substring(0, size === 'small' ? 100 : size === 'medium' ? 200 : 300)
-                    ) + (note.content.length > (size === 'small' ? 100 : size === 'medium' ? 200 : 300) ? '...' : '')
+                    __html: DOMPurify.sanitize(truncateContent(note.content))
                   }}
                 />
                 <time className={styles.date}>
                   {new Date(note.created_at).toLocaleDateString()}
                 </time>
+                <span className={styles.label}>Unlabeled</span>
               </Link>
             );
           })}
