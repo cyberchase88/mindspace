@@ -78,11 +78,6 @@ export default function NewNotePage() {
         e.preventDefault();
         saveNote();
       }
-      // Cmd/Ctrl + P to toggle preview
-      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
-        e.preventDefault();
-        setPreviewMode(prev => !prev);
-      }
     };
 
     window.addEventListener('keydown', handleKeyPress);
@@ -117,13 +112,6 @@ export default function NewNotePage() {
         />
         <div className={styles.actions} style={{ justifyContent: 'center', margin: '1rem 0' }}>
           <button
-            onClick={() => setPreviewMode(prev => !prev)}
-            className={styles.previewButton}
-            title="Toggle Preview (⌘P)"
-          >
-            {previewMode ? 'Edit' : 'Preview'}
-          </button>
-          <button
             onClick={saveNote}
             disabled={isSaving}
             className={styles.saveButton}
@@ -145,7 +133,6 @@ export default function NewNotePage() {
           value={content}
           onChange={setContent}
           placeholder="Start writing your note..."
-          preview={previewMode ? 'preview' : 'edit'}
         />
       </div>
     </div>
