@@ -49,6 +49,15 @@ const NoteCard = ({ note, isNew = false }) => {
     }
   };
 
+  const getCardGradient = () => {
+    const gradients = [
+      'var(--garden-card-gradient-1)',
+      'var(--garden-card-gradient-2)',
+      'var(--garden-card-gradient-3)'
+    ];
+    return gradients[Math.floor(Math.random() * gradients.length)];
+  };
+
   const growthState = getGrowthState();
 
   return (
@@ -58,12 +67,19 @@ const NoteCard = ({ note, isNew = false }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         animation: isNew ? 'grow 0.5s ease-out' : 'none',
+        background: getCardGradient(),
         transform: isHovered ? 'translateY(-4px) rotate(1deg)' : 'none',
-        transition: 'transform 0.3s ease-out'
+        transition: 'all var(--garden-transition-medium)'
       }}
     >
       <div className="note-header">
-        <span className="growth-icon" style={{ marginRight: '8px' }}>
+        <span 
+          className="growth-icon" 
+          style={{ 
+            marginRight: '8px',
+            animation: isHovered ? 'leafWave 2s infinite' : 'none'
+          }}
+        >
           {getGrowthIcon(growthState)}
         </span>
         <h3 className="garden-title">{note.title}</h3>
@@ -89,11 +105,13 @@ const NoteCard = ({ note, isNew = false }) => {
         .note-card {
           margin: var(--garden-spacing-medium);
           padding: var(--garden-spacing-medium);
-          border-radius: 12px;
+          border-radius: 16px;
           background: rgba(255, 255, 255, 0.9);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          box-shadow: var(--garden-shadow-sm);
           position: relative;
           overflow: hidden;
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .note-card::before {
@@ -105,7 +123,7 @@ const NoteCard = ({ note, isNew = false }) => {
           height: 4px;
           background: var(--garden-primary);
           opacity: 0.3;
-          transition: opacity 0.3s ease;
+          transition: opacity var(--garden-transition-quick);
         }
 
         .note-card:hover::before {
@@ -120,7 +138,11 @@ const NoteCard = ({ note, isNew = false }) => {
 
         .growth-icon {
           font-size: 1.2rem;
-          animation: ${isHovered ? 'leafWave 2s infinite' : 'none'};
+          transition: transform var(--garden-transition-quick);
+        }
+
+        .growth-icon:hover {
+          transform: scale(1.2);
         }
 
         @keyframes fadeIn {

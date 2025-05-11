@@ -5,6 +5,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
+import { WikiLinkMention } from './extensions/WikiLinkMention';
 import styles from './TipTapEditor.module.scss';
 
 const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...' }) => {
@@ -21,6 +22,7 @@ const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...' }) =
       Placeholder.configure({
         placeholder,
       }),
+      WikiLinkMention,
     ],
     content,
     onUpdate: ({ editor }) => {

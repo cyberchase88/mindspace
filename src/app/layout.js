@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from '@/lib/providers/QueryProvider';
 import { AuthProvider } from '@/lib/context/AuthContext';
+import { ViewModeProvider } from '@/lib/context/ViewModeContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <QueryProvider>
-            {children}
+            <ViewModeProvider>
+              {children}
+            </ViewModeProvider>
           </QueryProvider>
         </AuthProvider>
       </body>

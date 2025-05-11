@@ -1,0 +1,144 @@
+# Product Requirements Document (PRD)
+
+## Product Name
+
+**Mindspace Garden**
+
+## Vision
+
+A serene, immersive digital thought garden that helps users:
+
+1. Capture and organize their thoughts
+2. Reflect and process ideas deeply
+3. Remember concepts through spaced repetition and active recall
+4. Take action on learnings with task/habit triggers
+
+Combining the structured knowledge management of **Obsidian**, the calming ambiance of **Calm**, and the memory science of **Anki**.
+
+---
+
+## Phase 1: Thought Garden(mostly completed already - do not redo anything that has been completed unless necessary)
+
+### Core Features Implemented
+
+* **Project Setup:**
+
+  * Next.js App Directory + React 18+
+  * SCSS modules for styling (no Tailwind)
+  * Supabase integration for DB, storage, and auth
+  * Docker setup + Husky + ESLint + Prettier
+
+* **Notes CRUD**
+
+  * Create, view, edit, delete notes
+  * Supabase backend (`api/notes.js`, `supabase.js`)
+
+* **UI**
+
+  * Garden-themed visual design with particle effects(particle effects only on the main page)
+  * Multiple views: Card View, Sidebar View, Graph View
+  * Default is sidebar view
+  * Note preview content truncation for cards
+  * Markdown support via TipTap editor
+
+* **Sidebar Mode**
+
+  * Persistent collapsible sidebar
+  * Search + note list
+  * Open any note while sidebar remains visible
+
+* **Authentication (basic)**
+
+  * Login page and AuthContext wired with Supabase
+
+* **State Management**
+
+  * View mode stored in localStorage and handled via context
+
+* **Recent Notes Feed**
+
+  * UI present, logic to sort/display latest notes
+
+* **Testing Tooling**
+
+  * Jest + React Testing Library configured
+
+---
+
+## Phase 2: Memory Garden + Chat
+
+### Goals
+
+* Implement "Remember This" toggle logic:
+
+  * Store flagged notes
+  * Spaced repetition queue
+  * Recall quiz generator
+  * Review progress indicator
+
+* AI Assistant (Inline Chat)
+
+  * Ask follow-ups while writing
+  * Suggest memory cues or links
+  * Support for context-aware note chat
+
+* Graph View
+
+  * Render links between notes (bidirectional references)
+  * Allow zooming and panning
+  * Graph aesthetics match garden vibe
+  * Once we zoom close enough, should be able to see the note names
+  * If i click on a node that note should open
+
+* Markdown Editor Polish
+
+  * Live markdown render on type (no preview toggle)
+  * Ensure all formatting behaves predictably
+
+---
+
+## Future Phases (Planned)
+
+* **Action Garden**
+
+  * Convert notes into tasks or habits
+  * Calendar/reminder integration
+  * Habit toggle and reflection modal
+
+* **User Profiles & Settings**
+
+  * Theme, export/import, keyboard shortcuts
+  * Custom review intervals
+
+* **Advanced Features**
+
+  * Fulltext search
+  * Note versioning
+  * Tag system + tag-based views
+  * Offline support
+  * Collaboration mode
+
+---
+
+## Current Partial/Incomplete
+
+| Feature           | Status                               |
+| ----------------- | ------------------------------------ |
+| AI Chat Assistant | UI exists, logic TBD                 |
+| Spaced Repetition | Toggle present, logic in progress    |
+| Graph View        | Structure present, linking logic TBD |
+| Markdown Editor   | WYSIWYG/editor toggles in progress   |
+
+---
+
+## Outstanding Questions
+
+* Should markdown be stored as raw markdown or HTML?
+* Do we want to support third-party integrations (e.g. Notion, Google Calendar)? - yes, google calendar
+* Will notes ever be collaborative/multi-user in future phases?
+
+---
+
+## Summary
+
+Mindspace Garden has successfully launched its foundational structure (Phase 1) with core functionality, elegant UI, and a calm, inviting tone. Phase 2 focuses on building learning depth, memory integration, and bidirectional exploration.

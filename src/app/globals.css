@@ -1,6 +1,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-bg-primary: #f7fbe8;
+  --color-bg-secondary: #f0f4e8;
+  --color-bg-hover: #e6f7ff;
+  --color-text-primary: #222;
+  --color-text-secondary: #555;
+  --color-text-tertiary: #888;
+  --color-primary: #4dabf7;
+  --color-border: #e0e0e0;
+  --font-geist-sans: 'Geist', Arial, sans-serif;
+  --font-geist-mono: 'Geist Mono', 'Fira Mono', monospace;
 }
 
 @theme inline {
@@ -18,7 +28,86 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    linear-gradient(120deg, #e0f7fa 0%, #fceabb 100%),
+    radial-gradient(circle at 20% 30%, #d4fc79 0%, transparent 60%),
+    radial-gradient(circle at 80% 70%, #a1c4fd 0%, transparent 60%),
+    radial-gradient(circle at 60% 10%, #fbc2eb 0%, transparent 60%),
+    #f7fbe8;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(124, 154, 146, 0.2);
+  color: var(--color-text-primary);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 154, 146, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 154, 146, 0.5);
+}
+
+/* Focus styles */
+:focus {
+  outline: 2px solid rgba(124, 154, 146, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.loading {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.mainContainer {
+  background: rgba(255,255,255,0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(120,200,180,0.10);
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

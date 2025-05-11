@@ -47,53 +47,55 @@ export default function NotesList() {
   });
 
   return (
-    <div className={styles.notesList}>
-      <div className={styles.header}>
-        <h2>Your Garden of Thoughts</h2>
-        <Link href="/notes/new" className={styles.newButton}>
-          Plant New Thought
-        </Link>
-      </div>
-      {isLoading ? (
-        <div className={styles.loading}>Loading notes...</div>
-      ) : error ? (
-        <div className={styles.error}>Error: {error.message}</div>
-      ) : notes.length === 0 ? (
-        <div className={styles.empty}>
-          <p>Your garden is empty. Plant your first thought!</p>
+    <div className={styles.mainContainer}>
+      <div className={styles.notesList}>
+        <div className={styles.header}>
+          <h2>Your Garden of Thoughts</h2>
+          <Link href="/notes/new" className={styles.newButton}>
+            Plant New Thought
+          </Link>
         </div>
-      ) : (
-        <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className={styles.masonryGrid}
-          columnClassName={styles.masonryColumn}
-        >
-          {notes.map(note => {
-            const size = getNoteSize(note.content);
-            const previewContent = truncateContent(note.content);
-            const renderedPreview = marked(previewContent);
-            
-            return (
-              <Link 
-                href={`/notes/${note.id}`} 
-                key={note.id} 
-                className={`${styles.noteCard} ${styles[size]}`}
-              >
-                <h3>{note.title}</h3>
-                <div 
-                  className={styles.preview}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(renderedPreview)
-                  }}
-                />
-                <time className={styles.date}>
-                  {new Date(note.created_at).toLocaleDateString()}
-                </time>
-              </Link>
-            );
-          })}
-        </Masonry>
-      )}
+        {isLoading ? (
+          <div className={styles.loading}>Loading notes...</div>
+        ) : error ? (
+          <div className={styles.error}>Error: {error.message}</div>
+        ) : notes.length === 0 ? (
+          <div className={styles.empty}>
+            <p>Your garden is empty. Plant your first thought!</p>
+          </div>
+        ) : (
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className={styles.masonryGrid}
+            columnClassName={styles.masonryColumn}
+          >
+            {notes.map(note => {
+              const size = getNoteSize(note.content);
+              const previewContent = truncateContent(note.content);
+              const renderedPreview = marked(previewContent);
+              
+              return (
+                <Link 
+                  href={`/notes/${note.id}`} 
+                  key={note.id} 
+                  className={`${styles.noteCard} ${styles[size]}`}
+                >
+                  <h3>{note.title}</h3>
+                  <div 
+                    className={styles.preview}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(renderedPreview)
+                    }}
+                  />
+                  <time className={styles.date}>
+                    {new Date(note.created_at).toLocaleDateString()}
+                  </time>
+                </Link>
+              );
+            })}
+          </Masonry>
+        )}
+      </div>
     </div>
   );
 } 

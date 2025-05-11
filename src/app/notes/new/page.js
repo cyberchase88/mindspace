@@ -4,11 +4,42 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import TipTapEditor from '@/components/common/TipTapEditor';
-import { supabase } from '@/lib/supabase';
+import { supabase, createNoteLink, getNoteLinksForNote } from '@/lib/supabase';
 import styles from './new.module.scss';
 import pageStyles from '../../page.module.scss';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
+
+// Helper: Find or create a note by title, returns the note object
+async function findOrCreateNoteByTitle(title) {
+  // Try to find the note
+  const { data: notes, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('title', title)
+    .limit(1);
+  if (error) throw error;
+  if (notes && notes.length > 0) return notes[0];
+  // If not found, create it
+  const { data: newNote, error: createError } = await supabase
+    .from('notes')
+    .insert([{ title, content: '' }])
+    .select()
+    .single();
+  if (createError) throw createError;
+  return newNote;
+}
+
+// Helper: Parse [[Note Title]] patterns
+function extractNoteLinks(text) {
+  const regex = /\[\[([^\]]+)\]\]/g;
+  const matches = [];
+  let match;
+  while ((match = regex.exec(text)) !== null) {
+    matches.push(match[1].trim());
+  }
+  return Array.from(new Set(matches)); // deduplicate
+}
 
 export default function NewNotePage() {
   const [title, setTitle] = useState('');
@@ -19,7 +50,7 @@ export default function NewNotePage() {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
-  const saveNote = useCallback(async () => {
+  const saveNote = useCallback(async (processLinks = false) => {
     if (!title.trim()) {
       setError('Please enter a title');
       setSuccess(false);
@@ -49,6 +80,20 @@ export default function NewNotePage() {
       setLastSaved(new Date());
       setSuccess(true);
       console.log('Note saved successfully:', data);
+
+      // Only process links if requested (manual save)
+      if (processLinks) {
+        const noteId = data.id;
+        const links = extractNoteLinks(content);
+        for (const linkTitle of links) {
+          try {
+            const targetNote = await findOrCreateNoteByTitle(linkTitle);
+            await createNoteLink(noteId, targetNote.id, `[[${linkTitle}]]`);
+          } catch (err) {
+            console.error(`Error processing link for [[${linkTitle}]]:`, err);
+          }
+        }
+      }
     } catch (err) {
       setError(err.message);
       setSuccess(false);
@@ -72,10 +117,10 @@ export default function NewNotePage() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e) => {
-      // Cmd/Ctrl + S to save
+      // Cmd/Ctrl + S to save and process links
       if ((e.metaKey || e.ctrlKey) && e.key === 's') {
         e.preventDefault();
-        saveNote();
+        saveNote(true);
       }
     };
 
@@ -111,7 +156,7 @@ export default function NewNotePage() {
         />
         <div className={styles.actions} style={{ justifyContent: 'center', margin: '1rem 0' }}>
           <button
-            onClick={saveNote}
+            onClick={() => saveNote(true)}
             disabled={isSaving}
             className={styles.saveButton}
             title="Save Note (⌘S)"

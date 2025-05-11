@@ -134,4 +134,40 @@
       height: 0;
     }
   }
+}
+
+.wiki-link-highlight {
+  background: #dbeafe; /* pastel blue */
+  border-radius: 4px;
+  padding: 0 2px;
+  color: #2563eb;
+}
+
+.wiki-link-node {
+  background: #dbeafe; /* pastel blue */
+  border-radius: 4px;
+  padding: 0 2px;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.wiki-link-suggestion-dropdown {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(120, 200, 180, 0.10);
+  padding: 4px 0;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.wiki-link-suggestion-item {
+  padding: 6px 16px;
+  cursor: pointer;
+  color: #2563eb;
+  font-size: 1rem;
+}
+.wiki-link-suggestion-item:hover, .wiki-link-suggestion-item.active {
+  background: #dbeafe;
+  color: #1e40af;
 } 

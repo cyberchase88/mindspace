@@ -5,21 +5,35 @@
   --garden-accent: #e8b4bc;
   --garden-background: #f5f7f5;
   --garden-text: #2c3639;
+  --garden-text-light: #5e7c6a;
+  --garden-card-gradient-1: linear-gradient(135deg, #f3ffe3 0%, #e0f7fa 100%);
+  --garden-card-gradient-2: linear-gradient(135deg, #e0f7fa 0%, #f3ffe3 100%);
+  --garden-card-gradient-3: linear-gradient(135deg, #e8f5e9 0%, #e0f7fa 100%);
   
   /* Animation Timings */
-  --garden-transition-slow: 0.8s ease-in-out;
-  --garden-transition-medium: 0.4s ease-in-out;
-  --garden-transition-quick: 0.2s ease-in-out;
+  --garden-transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  --garden-transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --garden-transition-quick: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   /* Garden Spacing */
+  --garden-spacing-xs: 0.25rem;
   --garden-spacing-small: 0.5rem;
   --garden-spacing-medium: 1rem;
   --garden-spacing-large: 2rem;
+  
+  /* Shadows */
+  --garden-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --garden-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --garden-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* Base Garden Styles */
 .garden-container {
-  background-color: var(--garden-background);
+  background: linear-gradient(
+    135deg,
+    var(--garden-background) 0%,
+    var(--garden-secondary) 100%
+  );
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -39,16 +53,19 @@
 /* Note Card Base Styles */
 .note-card {
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: var(--garden-spacing-medium);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform var(--garden-transition-medium);
+  box-shadow: var(--garden-shadow-sm);
+  transition: all var(--garden-transition-medium);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .note-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) rotate(1deg);
+  box-shadow: var(--garden-shadow-md);
 }
 
 /* Note Growth States */
@@ -80,16 +97,28 @@
   100% { transform: rotate(0deg); }
 }
 
+@keyframes gardenEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Garden Typography */
 .garden-title {
   font-family: 'Quicksand', sans-serif;
   color: var(--garden-text);
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .garden-text {
   font-family: 'Quicksand', sans-serif;
-  color: var(--garden-text);
+  color: var(--garden-text-light);
   line-height: 1.6;
 }
 
@@ -99,4 +128,10 @@
   color: var(--garden-primary);
   font-style: italic;
   margin-top: var(--garden-spacing-small);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 } 
