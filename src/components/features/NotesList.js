@@ -37,14 +37,6 @@ export default function NotesList() {
     queryFn: fetchNotes,
   });
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading notes...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>Error: {error.message}</div>;
-  }
-
   return (
     <div className={styles.notesList}>
       <div className={styles.header}>
@@ -53,8 +45,11 @@ export default function NotesList() {
           Plant New Thought
         </Link>
       </div>
-
-      {notes.length === 0 ? (
+      {isLoading ? (
+        <div className={styles.loading}>Loading notes...</div>
+      ) : error ? (
+        <div className={styles.error}>Error: {error.message}</div>
+      ) : notes.length === 0 ? (
         <div className={styles.empty}>
           <p>Your garden is empty. Plant your first thought!</p>
         </div>

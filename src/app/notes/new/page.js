@@ -6,6 +6,7 @@ import Link from 'next/link';
 import MarkdownEditor from '@/components/common/MarkdownEditor';
 import { supabase } from '@/lib/supabase';
 import styles from './new.module.scss';
+import pageStyles from '../../page.module.scss';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
 
@@ -89,8 +90,8 @@ export default function NewNotePage() {
   }, [saveNote]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <div className={pageStyles.homePage}>
+      <header className={pageStyles.gardenHeader} style={{ marginBottom: '2rem' }}>
         <Link href="/" className={styles.backButton}>
           ← Back to Notes
         </Link>
@@ -100,8 +101,21 @@ export default function NewNotePage() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Note title..."
           className={styles.titleInput}
+          style={{
+            fontSize: '2rem',
+            margin: '1rem auto',
+            display: 'block',
+            textAlign: 'center',
+            background: 'transparent',
+            border: 'none',
+            fontWeight: 700,
+            color: '#3a5a40',
+            outline: 'none',
+            width: '100%',
+            maxWidth: 600
+          }}
         />
-        <div className={styles.actions}>
+        <div className={styles.actions} style={{ justifyContent: 'center', margin: '1rem 0' }}>
           <button
             onClick={() => setPreviewMode(prev => !prev)}
             className={styles.previewButton}
@@ -118,16 +132,14 @@ export default function NewNotePage() {
             {isSaving ? 'Saving...' : 'Save Note'}
           </button>
         </div>
-      </div>
-
-      {error && <div className={styles.error}>{error}</div>}
-      {success && <div className={styles.success}>Note saved successfully!</div>}
-      {lastSaved && (
-        <div className={styles.lastSaved}>
-          Last saved: {lastSaved.toLocaleTimeString()}
-        </div>
-      )}
-
+        {error && <div className={styles.error}>{error}</div>}
+        {success && <div className={styles.success}>Note saved successfully!</div>}
+        {lastSaved && (
+          <div className={styles.lastSaved}>
+            Last saved: {lastSaved.toLocaleTimeString()}
+          </div>
+        )}
+      </header>
       <div className={styles.editor}>
         <MarkdownEditor
           value={content}

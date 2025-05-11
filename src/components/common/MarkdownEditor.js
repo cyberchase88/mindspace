@@ -23,20 +23,22 @@ const toolbarCommands = [
   'link',
   'image',
   'table',
-  'preview',
   'fullscreen',
 ];
 
-export default function MarkdownEditor({ value, onChange, placeholder = 'Start writing...', preview = 'edit' }) {
+export default function MarkdownEditor({ value, onChange, placeholder = 'Start writing...' }) {
   return (
     <div data-color-mode="light">
       <MDEditor
         value={value}
         onChange={onChange}
-        preview={preview}
+        preview="live"
         height={500}
         placeholder={placeholder}
         commands={toolbarCommands}
+        toolbars={toolbarCommands}
+        toolbarsMode={[]}
+        visibleDragbar={false}
         enableScroll={true}
         textareaProps={{
           placeholder: placeholder,

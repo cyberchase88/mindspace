@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.scss';
+import pageStyles from '../../page.module.scss';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -29,12 +30,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.formWrapper}>
-        <h1>Welcome to Mindspace</h1>
-        <form onSubmit={handleSubmit} className={styles.form}>
+    <div className={pageStyles.homePage}>
+      <header className={pageStyles.gardenHeader} style={{ maxWidth: 400, margin: '3rem auto' }}>
+        <h1 style={{ marginBottom: '2rem' }}>Welcome to Mindspace</h1>
+        <form onSubmit={handleSubmit} className={styles.form} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {error && <div className={styles.error}>{error}</div>}
-          
           <div className={styles.formGroup}>
             <label htmlFor="email">Email</label>
             <input
@@ -46,7 +46,6 @@ export default function LoginPage() {
               placeholder="Enter your email"
             />
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
             <input
@@ -58,7 +57,6 @@ export default function LoginPage() {
               placeholder="Enter your password"
             />
           </div>
-
           <button 
             type="submit" 
             className={styles.submitButton}
@@ -67,7 +65,7 @@ export default function LoginPage() {
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-      </div>
+      </header>
     </div>
   );
 } 

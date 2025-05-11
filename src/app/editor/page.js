@@ -2,24 +2,27 @@
 
 import { useState } from 'react';
 import MarkdownEditor from '@/components/common/MarkdownEditor';
+import pageStyles from '../page.module.scss';
 
 export default function EditorPage() {
   const [content, setContent] = useState('');
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Markdown Editor</h1>
-      <MarkdownEditor
-        value={content}
-        onChange={setContent}
-        placeholder="Write your note here..."
-      />
-      <div className="mt-4">
-        <h2 className="text-xl font-semibold mb-2">Preview:</h2>
-        <div className="p-4 border rounded">
-          {content}
+    <div className={pageStyles.homePage}>
+      <header className={pageStyles.gardenHeader} style={{ maxWidth: 700, margin: '2rem auto' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem' }}>Markdown Editor</h1>
+        <MarkdownEditor
+          value={content}
+          onChange={setContent}
+          placeholder="Write your note here..."
+        />
+        <div style={{ marginTop: '2rem' }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '0.5rem' }}>Preview:</h2>
+          <div style={{ padding: '1rem', borderRadius: 8, background: 'rgba(255,255,255,0.7)', minHeight: 80 }}>
+            {content}
+          </div>
         </div>
-      </div>
+      </header>
     </div>
   );
 } 
