@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import styles from './note.module.scss';
+import DOMPurify from 'dompurify';
 
 export default function NoteDetailPage() {
   const { id } = useParams();
@@ -150,7 +151,12 @@ export default function NoteDetailPage() {
               placeholder="Note content..."
             />
           ) : (
-            <div className={styles.noteContent}>{note.content || <span style={{color:'#a3b18a'}}>No content yet.</span>}</div>
+            <div
+              className={styles.noteContent}
+              dangerouslySetInnerHTML={{
+                __html: note.content ? DOMPurify.sanitize(note.content) : '<span style="color:#a3b18a">No content yet.</span>'
+              }}
+            />
           )}
           <div className={styles.metadata}>
             Created: {new Date(note.created_at).toLocaleString()}

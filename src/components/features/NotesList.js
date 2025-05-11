@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Masonry from 'react-masonry-css';
 import styles from './NotesList.module.scss';
+import DOMPurify from 'dompurify';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -68,10 +69,14 @@ export default function NotesList() {
                 className={`${styles.noteCard} ${styles[size]}`}
               >
                 <h3>{note.title}</h3>
-                <p className={styles.preview}>
-                  {note.content.substring(0, size === 'small' ? 100 : size === 'medium' ? 200 : 300)}
-                  {note.content.length > (size === 'small' ? 100 : size === 'medium' ? 200 : 300) ? '...' : ''}
-                </p>
+                <p className={styles.preview}
+                  // Render sanitized HTML preview to prevent XSS
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      note.content.substring(0, size === 'small' ? 100 : size === 'medium' ? 200 : 300)
+                    ) + (note.content.length > (size === 'small' ? 100 : size === 'medium' ? 200 : 300) ? '...' : '')
+                  }}
+                />
                 <time className={styles.date}>
                   {new Date(note.created_at).toLocaleDateString()}
                 </time>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import MarkdownEditor from '@/components/common/MarkdownEditor';
+import TipTapEditor from '@/components/common/TipTapEditor';
 import { supabase } from '@/lib/supabase';
 import styles from './new.module.scss';
 import pageStyles from '../../page.module.scss';
@@ -15,7 +15,6 @@ export default function NewNotePage() {
   const [content, setContent] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
-  const [previewMode, setPreviewMode] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -129,8 +128,8 @@ export default function NewNotePage() {
         )}
       </header>
       <div className={styles.editor}>
-        <MarkdownEditor
-          value={content}
+        <TipTapEditor
+          content={content}
           onChange={setContent}
           placeholder="Start writing your note..."
         />
