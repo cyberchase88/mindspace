@@ -1,10 +1,12 @@
 'use client';
 import React, { useRef } from 'react';
 import { useChat } from './ChatProvider';
+import { useNote } from '@/lib/context/NoteContext';
 import styles from './ChatSidePanel.module.scss';
 
 export default function ChatSidePanel() {
   const { isOpen, setIsOpen, messages, input, setInput, sendMessage } = useChat();
+  const { currentNote } = useNote();
   const panelRef = useRef(null);
   const dragRef = useRef(null);
   // Resizing logic
@@ -37,7 +39,7 @@ export default function ChatSidePanel() {
   // Handle send
   const handleSend = (e) => {
     e.preventDefault();
-    if (input.trim()) sendMessage(input);
+    if (input.trim()) sendMessage(input, currentNote ? { note: currentNote } : undefined);
   };
   if (!isOpen) return null;
   return (

@@ -7,6 +7,7 @@ import { supabase, getBacklinksForNote, getNoteById } from '@/lib/supabase';
 import styles from './note.module.scss';
 import DOMPurify from 'dompurify';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
+import { useNote } from '@/lib/context/NoteContext';
 
 export default function NoteDetailPage() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export default function NoteDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [backlinks, setBacklinks] = useState([]);
   const [backlinkNotes, setBacklinkNotes] = useState([]);
+  const { setCurrentNote } = useNote();
 
   useEffect(() => {
     async function fetchNote() {
@@ -80,6 +82,10 @@ export default function NoteDetailPage() {
     document.addEventListener('click', handler);
     return () => document.removeEventListener('click', handler);
   }, []);
+
+  useEffect(() => {
+    if (note) setCurrentNote(note);
+  }, [note, setCurrentNote]);
 
   const handleEdit = () => {
     setIsEditing(true);
