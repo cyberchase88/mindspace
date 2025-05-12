@@ -44,6 +44,7 @@ function extractNoteLinks(text) {
 export default function NewNotePage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [noteId, setNoteId] = useState(null); // Track note id
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
   const [lastSaved, setLastSaved] = useState(null);
@@ -61,34 +62,47 @@ export default function NewNotePage() {
     setIsSaving(true);
     setError(null);
     setSuccess(false);
-    console.log('Attempting to save note:', { title, content });
+    console.log('Attempting to save note:', { title, content, noteId });
 
     try {
-      const { data, error } = await supabase
-        .from('notes')
-        .insert([{ title, content }])
-        .select()
-        .single();
+      let data, error;
+      if (noteId) {
+        // Update existing note
+        ({ data, error } = await supabase
+          .from('notes')
+          .update({ title, content })
+          .eq('id', noteId)
+          .select()
+          .single());
+      } else {
+        // Insert new note
+        ({ data, error } = await supabase
+          .from('notes')
+          .insert([{ title, content }])
+          .select()
+          .single());
+      }
 
       if (error) {
         setError(error.message);
         setSuccess(false);
-        console.error('Supabase insert error:', error);
+        console.error('Supabase save error:', error);
         return;
       }
 
+      setNoteId(data.id); // Store id after first save
       setLastSaved(new Date());
       setSuccess(true);
       console.log('Note saved successfully:', data);
 
       // Only process links if requested (manual save)
       if (processLinks) {
-        const noteId = data.id;
+        const noteIdToUse = data.id;
         const links = extractNoteLinks(content);
         for (const linkTitle of links) {
           try {
             const targetNote = await findOrCreateNoteByTitle(linkTitle);
-            await createNoteLink(noteId, targetNote.id, `[[${linkTitle}]]`);
+            await createNoteLink(noteIdToUse, targetNote.id, `[[${linkTitle}]]`);
           } catch (err) {
             console.error(`Error processing link for [[${linkTitle}]]:`, err);
           }
@@ -101,7 +115,7 @@ export default function NewNotePage() {
     } finally {
       setIsSaving(false);
     }
-  }, [title, content]);
+  }, [title, content, noteId]);
 
   // Auto-save effect
   useEffect(() => {

@@ -1,8 +1,15 @@
 .container {
   padding: 2.5rem 2rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--garden-background) 0%, var(--garden-secondary) 100%);
+  background: transparent;
   font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+}
+
+// Masonry styles for react-masonry-css
+.masonryGrid,
+.masonryGridColumn {
+  background: none !important;
+  box-shadow: none !important;
 }
 
 .masonryGrid {

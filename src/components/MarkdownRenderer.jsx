@@ -2,6 +2,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import '../styles/garden-theme.css';
+import Link from 'next/link';
+import ReactStringReplace from 'react-string-replace';
 
 const MarkdownRenderer = ({ content }) => {
   return (
@@ -26,6 +28,13 @@ const MarkdownRenderer = ({ content }) => {
               <code className="garden-code-block" {...props} />
           ),
           pre: ({ node, ...props }) => <pre className="garden-pre" {...props} />,
+          text: ({ children }) => {
+            let content = children;
+            content = ReactStringReplace(content, /\[\[([^\]]+)\]\]/g, (match, i) => (
+              <Link key={i} href={`/notes/${encodeURIComponent(match)}`} className="wiki-link">{`[[${match}]]`}</Link>
+            ));
+            return <>{content}</>;
+          },
         }}
       >
         {content}
