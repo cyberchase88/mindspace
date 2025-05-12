@@ -199,7 +199,6 @@ export default function GraphView() {
           <ForceGraph2D
             ref={fgRef}
             graphData={graphData}
-            nodeLabel="name"
             nodeColor={node => node.id === selectedNode?.id ? '#ff6b6b' : '#4dabf7'}
             nodeRelSize={6}
             linkWidth={1}
@@ -211,6 +210,51 @@ export default function GraphView() {
             width={dimensions.width}
             height={dimensions.height}
             onEngineStop={() => fgRef.current && fgRef.current.zoomToFit(400)}
+            nodeCanvasObject={(node, ctx, globalScale) => {
+              // Draw the bubble (circle)
+              const isSelected = node.id === selectedNode?.id;
+              const radius = 6 * globalScale; // match nodeRelSize
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
+              ctx.fillStyle = isSelected ? '#ff6b6b' : '#3a5a40';
+              ctx.shadowColor = isSelected ? '#ffb3b3' : '#b8c4b9';
+              ctx.shadowBlur = isSelected ? 12 : 6;
+              ctx.globalAlpha = 1;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.strokeStyle = isSelected ? '#ff6b6b' : '#3a5a40';
+              ctx.lineWidth = isSelected ? 2.5 : 1.5;
+              ctx.stroke();
+              ctx.restore();
+
+              // Draw the label with dynamic opacity
+              const label = node.name;
+              const fontSize = 14 / globalScale;
+              let opacity = 0;
+              if (globalScale > 2.5) {
+                opacity = 1;
+              } else if (globalScale > 1.2) {
+                opacity = 0.5 + 0.5 * ((globalScale - 1.2) / (2.5 - 1.2));
+              } else if (globalScale > 0.7) {
+                opacity = 0.3 * ((globalScale - 0.7) / (1.2 - 0.7));
+              } else {
+                opacity = 0;
+              }
+              if (opacity > 0) {
+                ctx.save();
+                ctx.globalAlpha = opacity;
+                ctx.font = `${fontSize}px Arial, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#222';
+                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+                ctx.lineWidth = 4 / globalScale;
+                ctx.strokeText(label, node.x, node.y - radius - 10 / globalScale);
+                ctx.fillText(label, node.x, node.y - radius - 10 / globalScale);
+                ctx.restore();
+              }
+            }}
           />
         )}
       </div>
