@@ -82,4 +82,19 @@ export async function deleteNoteLink(linkId) {
     .delete()
     .eq('id', linkId);
   if (error) throw error;
+}
+
+/**
+ * Fetches a note by its ID.
+ * @param {string|number} noteId - The ID of the note.
+ * @returns {Promise<object>} The note object.
+ */
+export async function getNoteById(noteId) {
+  const { data, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('id', noteId)
+    .single();
+  if (error) throw error;
+  return data;
 } 

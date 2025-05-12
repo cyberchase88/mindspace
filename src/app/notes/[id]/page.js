@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { supabase, getBacklinksForNote, getNoteById } from '@/lib/supabase';
 import styles from './note.module.scss';
 import DOMPurify from 'dompurify';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 
 export default function NoteDetailPage() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ export default function NoteDetailPage() {
   const [editedContent, setEditedContent] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [backlinks, setBacklinks] = useState([]);
+  const [backlinkNotes, setBacklinkNotes] = useState([]);
 
   useEffect(() => {
     async function fetchNote() {
@@ -39,6 +42,33 @@ export default function NoteDetailPage() {
     }
     if (id) fetchNote();
   }, [id]);
+
+  useEffect(() => {
+    async function fetchBacklinks() {
+      if (!id) return;
+      try {
+        const links = await getBacklinksForNote(id);
+        setBacklinks(links);
+        // Fetch all source notes in parallel
+        const notes = await Promise.all(
+          links.map(async (link) => {
+            try {
+              const note = await getNoteById(link.source_note_id);
+              return note;
+            } catch {
+              return null;
+            }
+          })
+        );
+        setBacklinkNotes(notes.filter(Boolean));
+      } catch (err) {
+        // Optionally handle error
+        setBacklinks([]);
+        setBacklinkNotes([]);
+      }
+    }
+    fetchBacklinks();
+  }, [id, note]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -151,12 +181,9 @@ export default function NoteDetailPage() {
               placeholder="Note content..."
             />
           ) : (
-            <div
-              className={styles.noteContent}
-              dangerouslySetInnerHTML={{
-                __html: note.content ? DOMPurify.sanitize(note.content) : '<span style="color:#a3b18a">No content yet.</span>'
-              }}
-            />
+            <div className={styles.noteContent}>
+              <MarkdownRenderer content={note.content || 'No content yet.'} />
+            </div>
           )}
           <div className={styles.metadata}>
             Created: {new Date(note.created_at).toLocaleString()}
@@ -165,6 +192,19 @@ export default function NoteDetailPage() {
             )}
           </div>
         </div>
+        {/* Backlinks Section */}
+        {backlinkNotes.length > 0 && (
+          <div className={styles.backlinksSection}>
+            <h3>Backlinks</h3>
+            <ul>
+              {backlinkNotes.map((blNote) => (
+                <li key={blNote.id}>
+                  <Link href={`/notes/${blNote.id}`}>{blNote.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
