@@ -46,10 +46,28 @@ export function ChatProvider({ children }) {
     // Show loading indicator
     setMessages((msgs) => [...msgs, { role: 'ai', text: '...', loading: true }]);
     try {
+      // Prepare last 5 turns (user+ai pairs, or as many as available)
+      const msgs = messages.concat([{ role: 'user', text }]);
+      // Only include messages with role 'user' or 'ai' (ignore loading, etc.)
+      const filtered = msgs.filter(m => m.role === 'user' || m.role === 'ai');
+      // Group into turns: each user message + following ai message
+      const turns = [];
+      for (let i = 0; i < filtered.length; i++) {
+        if (filtered[i].role === 'user') {
+          const userMsg = filtered[i];
+          const aiMsg = filtered[i+1] && filtered[i+1].role === 'ai' ? filtered[i+1] : null;
+          turns.push({ user: userMsg.text, ai: aiMsg ? aiMsg.text : null });
+        }
+      }
+      const last5 = turns.slice(-5);
+      const history = last5.map(turn => [
+        { role: 'user', content: turn.user },
+        ...(turn.ai ? [{ role: 'assistant', content: turn.ai }] : [])
+      ]).flat();
       const res = await fetch('/api/ai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, context }),
+        body: JSON.stringify({ message: text, context, history }),
       });
       if (!res.ok) throw new Error('Failed to get AI response');
       const data = await res.json();
@@ -73,7 +91,7 @@ export function ChatProvider({ children }) {
         return msgs;
       });
     }
-  }, []);
+  }, [messages]);
   const value = {
     isOpen,
     setIsOpen,
