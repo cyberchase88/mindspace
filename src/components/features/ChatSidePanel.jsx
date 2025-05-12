@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useChat } from './ChatProvider';
 import { useNote } from '@/lib/context/NoteContext';
 import styles from './ChatSidePanel.module.scss';
+import MarkdownRenderer from '../MarkdownRenderer';
 
 export default function ChatSidePanel() {
   const { isOpen, setIsOpen, messages, input, setInput, sendMessage } = useChat();
@@ -52,19 +53,22 @@ export default function ChatSidePanel() {
       <div className={styles.messages}>
         {messages.length === 0 && <div className={styles.empty}>No messages yet. Ask me anything!</div>}
         {messages.map((msg, i) => (
-          <div key={i} className={msg.role === 'user' ? styles.userMsg : styles.aiMsg}>
-            <span>{msg.text}</span>
-            {msg.role === 'ai' && !msg.loading && (
-              <button
-                className={styles.copyBtn}
-                aria-label="Copy response"
-                onClick={() => navigator.clipboard.writeText(msg.text)}
-                tabIndex={0}
-              >📋</button>
-            )}
-            {msg.loading && <span className={styles.loading}>...</span>}
-          </div>
+          !msg.loading && (
+            <div key={i} className={msg.role === 'user' ? styles.userMsg : styles.aiMsg}>
+              <MarkdownRenderer content={msg.text} />
+            </div>
+          )
         ))}
+        {/* Typing indicator: show if last message is AI and loading */}
+        {messages.length > 0 && messages[messages.length-1].role === 'ai' && messages[messages.length-1].loading && (
+          <div className={styles.aiMsg}>
+            <div className={styles.typingIndicator}>
+              <span className={styles.typingDot}></span>
+              <span className={styles.typingDot}></span>
+              <span className={styles.typingDot}></span>
+            </div>
+          </div>
+        )}
       </div>
       <form className={styles.inputBar} onSubmit={handleSend}>
         <input

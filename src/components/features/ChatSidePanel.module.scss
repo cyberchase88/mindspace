@@ -68,6 +68,16 @@
   text-align: center;
   margin-top: 2rem;
 }
+@keyframes chatMessageIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .userMsg {
   align-self: flex-end;
   background: linear-gradient(90deg, #b7e4c7 0%, #95d5b2 100%);
@@ -78,6 +88,7 @@
   font-size: 1.05rem;
   box-shadow: 0 2px 8px rgba(120, 200, 180, 0.08);
   position: relative;
+  animation: chatMessageIn 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 .aiMsg {
   align-self: flex-start;
@@ -90,6 +101,7 @@
   font-size: 1.05rem;
   box-shadow: 0 2px 8px rgba(120, 200, 180, 0.08);
   position: relative;
+  animation: chatMessageIn 0.5s cubic-bezier(0.4,0,0.2,1);
   .copyBtn {
     background: none;
     border: none;
@@ -160,5 +172,36 @@
   .header, .inputBar, .messages {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  height: 1.2em;
+  margin: 0.2em 0 0.2em 0.2em;
+}
+.typingDot {
+  width: 0.5em;
+  height: 0.5em;
+  background: #b7e4c7;
+  border-radius: 50%;
+  display: inline-block;
+  animation: typingBounce 1s infinite both;
+}
+.typingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
   }
 } 
