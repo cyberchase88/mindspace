@@ -70,6 +70,17 @@ export default function NoteDetailPage() {
     fetchBacklinks();
   }, [id, note]);
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.target.matches('.wiki-link-node')) {
+        e.preventDefault();
+        router.push(e.target.getAttribute('href'));
+      }
+    };
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, []);
+
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -113,6 +124,8 @@ export default function NoteDetailPage() {
       setIsDeleting(false);
     }
   };
+
+  const uniqueBacklinks = Array.from(new Map(backlinkNotes.map(note => [note.id, note])).values());
 
   if (loading) return <div className={styles.pageBg}><div className={styles.container}>Loading...</div></div>;
   if (error) return <div className={styles.pageBg}><div className={styles.container} style={{ color: 'red' }}>Error: {error}</div></div>;
@@ -197,7 +210,7 @@ export default function NoteDetailPage() {
           <div className={styles.backlinksSection}>
             <h3>Backlinks</h3>
             <ul>
-              {backlinkNotes.map((blNote) => (
+              {uniqueBacklinks.map((blNote) => (
                 <li key={blNote.id}>
                   <Link href={`/notes/${blNote.id}`}>{blNote.title}</Link>
                 </li>

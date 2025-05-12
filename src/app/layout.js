@@ -3,6 +3,9 @@ import "./globals.css";
 import QueryProvider from '@/lib/providers/QueryProvider';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { ViewModeProvider } from '@/lib/context/ViewModeContext';
+import { ChatProvider } from '@/components/features/ChatProvider';
+import FloatingChatButton from '@/components/features/FloatingChatButton';
+import ChatSidePanel from '@/components/features/ChatSidePanel';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +31,11 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <QueryProvider>
             <ViewModeProvider>
-              {children}
+              <ChatProvider>
+                {children}
+                <FloatingChatButton />
+                <ChatSidePanel />
+              </ChatProvider>
             </ViewModeProvider>
           </QueryProvider>
         </AuthProvider>

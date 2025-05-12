@@ -97,4 +97,20 @@ export async function getNoteById(noteId) {
     .single();
   if (error) throw error;
   return data;
+}
+
+/**
+ * Fetches a note by its title.
+ * @param {string} title - The title of the note.
+ * @returns {Promise<object|null>} The note object if found, or null if not found.
+ */
+export async function getNoteByTitle(title) {
+  const { data, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('title', title)
+    .limit(1);
+  if (error) throw error;
+  if (data && data.length > 0) return data[0];
+  return null;
 } 

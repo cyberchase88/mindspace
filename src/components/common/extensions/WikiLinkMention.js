@@ -14,7 +14,21 @@ async function fetchNoteSuggestions(query) {
   return data.map((n) => ({ id: n.title, label: n.title }));
 }
 
-export const WikiLinkMention = Mention.configure({
+export const WikiLinkMention = Mention.extend({
+  renderHTML({ node }) {
+    const noteTitle = node.attrs.label;
+    const href = `/notes/${encodeURIComponent(noteTitle)}`;
+    return [
+      'a',
+      {
+        href,
+        class: 'wiki-link-node',
+        'data-wiki-link-node': 'true',
+      },
+      `[[${noteTitle}]]`
+    ];
+  },
+}).configure({
   HTMLAttributes: {
     class: 'wiki-link-node',
     'data-wiki-link-node': 'true',
@@ -74,8 +88,5 @@ export const WikiLinkMention = Mention.configure({
         });
       }
     },
-  },
-  renderLabel({ options, node }) {
-    return `[[${node.attrs.label}]]`;
   },
 }); 
