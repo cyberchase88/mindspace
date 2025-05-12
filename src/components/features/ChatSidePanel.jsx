@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useChat } from './ChatProvider';
 import { useNote } from '@/lib/context/NoteContext';
 import styles from './ChatSidePanel.module.scss';
@@ -10,6 +10,15 @@ export default function ChatSidePanel() {
   const { currentNote } = useNote();
   const panelRef = useRef(null);
   const dragRef = useRef(null);
+  const messagesRef = useRef(null); // Ref for messages container
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   // Resizing logic
   React.useEffect(() => {
     const panel = panelRef.current;
@@ -50,7 +59,7 @@ export default function ChatSidePanel() {
         <span className={styles.title}>AI Chat Assistant</span>
         <button className={styles.closeBtn} aria-label="Close chat" onClick={() => setIsOpen(false)}>&times;</button>
       </header>
-      <div className={styles.messages}>
+      <div className={styles.messages} ref={messagesRef}>
         {messages.length === 0 && <div className={styles.empty}>No messages yet. Ask me anything!</div>}
         {messages.map((msg, i) => (
           !msg.loading && (
