@@ -1,29 +1,21 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
-import ReviewNoteCard from '@/components/features/ReviewNoteCard';
-import { getStaticUserId } from '@/lib/supabase';
+import { useState } from 'react';
+import NoteSelection from '../../components/NoteSelection';
+import ReviewSession from '../../components/ReviewSession';
 
-async function fetchDueNotes() {
-  const userId = getStaticUserId();
-  const res = await fetch(`/api/spaced-repetition/due?userId=${userId}`);
-  if (!res.ok) throw new Error('Failed to fetch due notes');
-  const data = await res.json();
-  return data.due || [];
-}
+const USER_ID = 'a84fe585-37ac-4bf1-bc17-5ba87c228555'; // hardcoded for now
 
 export default function ReviewPage() {
-  const { data: notes, isLoading, error } = useQuery({
-    queryKey: ['due-notes'],
-    queryFn: fetchDueNotes,
-  });
+  const [selectedNoteIds, setSelectedNoteIds] = useState(null);
 
-  if (isLoading) return <div style={{ textAlign: 'center', marginTop: 64 }}>Loading due notes...</div>;
-  if (error) return <div style={{ color: 'red', textAlign: 'center', marginTop: 64 }}>Error: {error.message}</div>;
-  if (!notes || notes.length === 0) {
-    return <div style={{ textAlign: 'center', marginTop: 64, color: '#588157', fontWeight: 500 }}>No notes are due for review! 🌱</div>;
+  if (!selectedNoteIds) {
+    return (
+      <NoteSelection
+        userId={USER_ID}
+        onStartReview={setSelectedNoteIds}
+      />
+    );
   }
 
-  // For now, just show the first due note
-  const note = notes[0]?.note;
-  return <ReviewNoteCard note={note} />;
+  return <ReviewSession userId={USER_ID} noteIds={selectedNoteIds} />;
 } 
