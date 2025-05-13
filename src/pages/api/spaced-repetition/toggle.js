@@ -7,9 +7,9 @@ export default async function handler(req, res) {
   }
 
   const { noteId, userId: bodyUserId } = req.body;
-  const userId = bodyUserId || '00000000-0000-0000-0000-000000000000';
-  if (!noteId) {
-    return res.status(400).json({ error: 'Missing noteId' });
+  const userId = bodyUserId;
+  if (!noteId || !userId) {
+    return res.status(400).json({ error: 'Missing noteId or userId' });
   }
 
   // Check if already remembered

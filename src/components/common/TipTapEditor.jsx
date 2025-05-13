@@ -9,6 +9,7 @@ import { WikiLinkMention } from './extensions/WikiLinkMention';
 import styles from './TipTapEditor.module.scss';
 import { useNote } from '@/lib/context/NoteContext';
 import { useState, useEffect } from 'react';
+import { getStaticUserId } from '@/lib/supabase';
 
 const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...', saveNote }) => {
   const editor = useEditor({
@@ -100,7 +101,7 @@ function RememberToggleSwitch({ onAutoSave }) {
     if (!currentNote?.id) return;
     setLoading(true);
     setError(null);
-    const userId = 'a84fe585-37ac-4bf1-bc17-5ba87c228555';
+    const userId = getStaticUserId();
     // Only fetch remembered state, do not toggle
     fetch(`/api/spaced-repetition/is-remembered?noteId=${currentNote.id}&userId=${userId}`)
       .then((res) => res.json())
@@ -130,7 +131,7 @@ function RememberToggleSwitch({ onAutoSave }) {
       return;
     }
     try {
-      const userId = 'a84fe585-37ac-4bf1-bc17-5ba87c228555'; // Hardcoded Supabase user ID
+      const userId = getStaticUserId();
       const res = await fetch('/api/spaced-repetition/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

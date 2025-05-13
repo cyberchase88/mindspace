@@ -1,10 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import ReviewNoteCard from '@/components/features/ReviewNoteCard';
+import { getStaticUserId } from '@/lib/supabase';
 
 async function fetchDueNotes() {
-  // TODO: Replace with real user ID/auth logic
-  const userId = 'demo-user';
+  const userId = getStaticUserId();
   const res = await fetch(`/api/spaced-repetition/due?userId=${userId}`);
   if (!res.ok) throw new Error('Failed to fetch due notes');
   const data = await res.json();
@@ -24,6 +24,6 @@ export default function ReviewPage() {
   }
 
   // For now, just show the first due note
-  const note = notes[0];
+  const note = notes[0]?.note;
   return <ReviewNoteCard note={note} />;
 } 

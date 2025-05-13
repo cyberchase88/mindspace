@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
+import { getStaticUserId } from '../supabase';
 
 const BASE_URL = 'http://localhost:3000/api/spaced-repetition';
-const userId = '00000000-0000-0000-0000-000000000000';
+const userId = getStaticUserId();
 const noteId = '1fd3480e-f204-492d-be03-b4b5c3e2b477'; // this is the note id for the note "Ice cream flavors", pls update this if that note is deleted
 
 describe('Spaced Repetition API Integration', () => {

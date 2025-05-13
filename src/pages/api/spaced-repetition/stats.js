@@ -5,7 +5,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const userId = req.query.userId || '00000000-0000-0000-0000-000000000000';
+  const userId = req.query.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'Missing userId' });
+  }
 
   // Try to get stats from user_spaced_repetition_stats
   const { data: stats, error: statsErr } = await supabase

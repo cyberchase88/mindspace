@@ -7,9 +7,9 @@ export default async function handler(req, res) {
   }
 
   const { noteId, quality, userId: bodyUserId } = req.body;
-  const userId = bodyUserId || '00000000-0000-0000-0000-000000000000';
-  if (!noteId || typeof quality !== 'number') {
-    return res.status(400).json({ error: 'Missing noteId or quality' });
+  const userId = bodyUserId;
+  if (!noteId || typeof quality !== 'number' || !userId) {
+    return res.status(400).json({ error: 'Missing noteId, quality, or userId' });
   }
 
   // Get the remembered item

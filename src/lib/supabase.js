@@ -113,4 +113,9 @@ export async function getNoteByTitle(title) {
   if (error) throw error;
   if (data && data.length > 0) return data[0];
   return null;
+}
+
+// Single source of truth for static user ID (for demo/dev)
+export function getStaticUserId() {
+  return 'a84fe585-37ac-4bf1-bc17-5ba87c228555';
 } 
