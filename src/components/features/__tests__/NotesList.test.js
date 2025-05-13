@@ -2,6 +2,27 @@ import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NotesList from '../NotesList';
 
+// Mock the supabase client to prevent env var errors
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: jest.fn(() => ({
+      insert: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      single: jest.fn().mockResolvedValue({}),
+      eq: jest.fn().mockReturnThis(),
+      delete: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+    })),
+  },
+  createNote: jest.fn(),
+  createNoteLink: jest.fn(),
+  getNoteLinksForNote: jest.fn(),
+  getBacklinksForNote: jest.fn(),
+  deleteNoteLink: jest.fn(),
+  getNoteById: jest.fn(),
+  getNoteByTitle: jest.fn(),
+}));
+
 // Mock the notes API
 jest.mock('@/lib/api/notes', () => ({
   notesApi: {

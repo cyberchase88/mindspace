@@ -7,6 +7,7 @@ import TipTapEditor from '@/components/common/TipTapEditor';
 import { supabase, createNoteLink, getNoteLinksForNote } from '@/lib/supabase';
 import styles from './new.module.scss';
 import pageStyles from '../../page.module.scss';
+import { useNote } from '@/lib/context/NoteContext';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
 
@@ -50,6 +51,7 @@ export default function NewNotePage() {
   const [lastSaved, setLastSaved] = useState(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const { setCurrentNote } = useNote();
 
   const saveNote = useCallback(async (processLinks = false) => {
     if (!title.trim()) {
@@ -94,6 +96,7 @@ export default function NewNotePage() {
       setLastSaved(new Date());
       setSuccess(true);
       console.log('Note saved successfully:', data);
+      setCurrentNote(data);
 
       // Only process links if requested (manual save)
       if (processLinks) {
@@ -115,7 +118,7 @@ export default function NewNotePage() {
     } finally {
       setIsSaving(false);
     }
-  }, [title, content, noteId]);
+  }, [title, content, noteId, setCurrentNote]);
 
   // Auto-save effect
   useEffect(() => {
