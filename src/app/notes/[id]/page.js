@@ -8,6 +8,7 @@ import styles from './note.module.scss';
 import DOMPurify from 'dompurify';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { useNote } from '@/lib/context/NoteContext';
+import TipTapEditor from '@/components/common/TipTapEditor';
 
 export default function NoteDetailPage() {
   const { id } = useParams();
@@ -193,11 +194,11 @@ export default function NoteDetailPage() {
         </header>
         <div className={styles.content}>
           {isEditing ? (
-            <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              className={styles.contentInput}
-              placeholder="Note content..."
+            <TipTapEditor
+              content={editedContent}
+              onChange={setEditedContent}
+              placeholder="Edit your note..."
+              saveNote={handleSave}
             />
           ) : (
             <div className={styles.noteContent}>
