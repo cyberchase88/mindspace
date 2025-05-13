@@ -7,8 +7,10 @@ import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import { WikiLinkMention } from './extensions/WikiLinkMention';
 import styles from './TipTapEditor.module.scss';
+import { useNote } from '@/lib/context/NoteContext';
+import { useState, useEffect } from 'react';
 
-const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...' }) => {
+const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...', saveNote }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -81,10 +83,88 @@ const TipTapEditor = ({ content, onChange, placeholder = 'Start writing...' }) =
         >
           1.
         </button>
+        <RememberToggleSwitch onAutoSave={saveNote} />
       </div>
       <EditorContent editor={editor} />
     </div>
   );
 };
+
+function RememberToggleSwitch({ onAutoSave }) {
+  const { currentNote, setCurrentNote } = useNote();
+  const [remembered, setRemembered] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!currentNote?.id) return;
+    setLoading(true);
+    setError(null);
+    const userId = 'a84fe585-37ac-4bf1-bc17-5ba87c228555';
+    // Only fetch remembered state, do not toggle
+    fetch(`/api/spaced-repetition/is-remembered?noteId=${currentNote.id}&userId=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRemembered(!!data.remembered);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Failed to fetch remember state');
+        setLoading(false);
+      });
+  }, [currentNote?.id]);
+
+  const handleToggle = async (e) => {
+    console.log('Toggle handler fired');
+    const checked = e.target.checked;
+    console.log('currentNote:', currentNote);
+    if (checked) {
+      console.log('Spaced Repetition enabled');
+    } else {
+      console.log('Spaced Repetition disabled');
+    }
+    setLoading(true);
+    setError(null);
+    if (!currentNote || !currentNote.id) {
+      setError('Note must be saved before enabling spaced repetition.');
+      return;
+    }
+    try {
+      const userId = 'a84fe585-37ac-4bf1-bc17-5ba87c228555'; // Hardcoded Supabase user ID
+      const res = await fetch('/api/spaced-repetition/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ noteId: currentNote.id, userId }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setRemembered(!!data.remembered);
+      } else {
+        setError(data.error || 'Failed to update');
+      }
+    } catch {
+      setError('Network error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }} title="When enabled, this note will be added to your spaced repetition review queue.">
+        <input
+          type="checkbox"
+          checked={remembered}
+          onChange={handleToggle}
+          disabled={false}
+          style={{ width: 36, height: 20, accentColor: '#95d5b2' }}
+        />
+        <span style={{ fontSize: 14, color: '#3a5a40' }}>Enable Spaced Repetition for this note</span>
+      </label>
+      {loading && <span style={{ marginLeft: 8 }}>⏳</span>}
+      {error && <span style={{ color: 'red', marginLeft: 8 }}>{error}</span>}
+    </div>
+  );
+}
 
 export default TipTapEditor; 
