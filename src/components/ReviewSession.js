@@ -100,7 +100,7 @@ export default function ReviewSession({ userId, noteIds }) {
         <b>Question {currentIdx + 1} of {questions.length}</b>
       </div>
       <div style={{ margin: '16px 0', fontWeight: 500, color: '#222' }}>
-        {currentQ.question_text}
+        {currentQ.question_text.replace(/^\d+\.[\s-]*/, '')}
       </div>
       {!submitted ? (
         <form onSubmit={handleSubmit}>
@@ -124,11 +124,9 @@ export default function ReviewSession({ userId, noteIds }) {
             <b>AI Score:</b> {aiScore} / 5
           </div>
           <div>
-            <b>AI Feedback:</b> {aiFeedback}
-          </div>
-          <div style={{ marginTop: 12, background: '#f9f9f9', padding: 12 }}>
-            <b>Original Note Content:</b>
-            <div style={{ whiteSpace: 'pre-wrap' }}>{noteContent}</div>
+            <b>AI Feedback:</b> {aiScore !== 5 && !aiFeedback.toLowerCase().includes('should') && !aiFeedback.toLowerCase().includes('try')
+              ? `Here's how you can improve: ${aiFeedback}`
+              : aiFeedback}
           </div>
           <div style={{ marginTop: 16 }}>
             <button onClick={handlePrev} disabled={currentIdx === 0}>Previous</button>

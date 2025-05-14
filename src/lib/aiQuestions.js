@@ -21,8 +21,10 @@ export async function generateActiveRecallQuestions(noteContent, numQuestions = 
   
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || '';
-    // Split questions by line, filter out empty lines
-    return text.split('\n').map(q => q.trim()).filter(Boolean);
+    // Split questions by line, filter out empty lines, and remove leading numbering
+    return text.split('\n')
+      .map(q => q.trim().replace(/^\d+\.[\s-]*/, ''))
+      .filter(Boolean);
   }
 
 export async function getAIRecallScore(noteContent, userAnswer) {
