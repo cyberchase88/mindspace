@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const USER_ID = 'a84fe585-37ac-4bf1-bc17-5ba87c228555'; // hardcoded for now
 
@@ -23,6 +24,7 @@ export default function SpacedRepetitionSchedulePage() {
   const [showingDays, setShowingDays] = useState(7);
   const [dateFromInput, setDateFromInput] = useState(from);
   const [dateToInput, setDateToInput] = useState(to);
+  const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
@@ -67,6 +69,14 @@ export default function SpacedRepetitionSchedulePage() {
 
   const grouped = groupByDay(schedule);
   const days = Object.keys(grouped).sort();
+  const todayString = new Date().toISOString().slice(0, 10);
+  const todaysItems = grouped[todayString] || [];
+  const todaysNoteIds = todaysItems.map(item => item.note?.id).filter(Boolean);
+
+  function startReviewForDay(noteIds) {
+    if (!noteIds.length) return;
+    router.push(`/review?noteIds=${noteIds.join(',')}`);
+  }
 
   return (
     <>
@@ -103,7 +113,17 @@ export default function SpacedRepetitionSchedulePage() {
           <>
             {days.map((day) => (
               <div key={day} style={{ marginBottom: 24 }}>
-                <h2 style={{ fontSize: 20, marginBottom: 8 }}>{day}</h2>
+                <h2 style={{ fontSize: 20, marginBottom: 8 }}>
+                  {day}
+                  {day === todayString && todaysNoteIds.length > 0 && (
+                    <button
+                      style={{ marginLeft: 16, fontSize: 14, padding: '4px 10px' }}
+                      onClick={() => startReviewForDay(todaysNoteIds)}
+                    >
+                      Start Review
+                    </button>
+                  )}
+                </h2>
                 <ul style={{ paddingLeft: 24 }}>
                   {grouped[day].map((item) => (
                     <li key={item.id} style={{ marginBottom: 6 }}>
