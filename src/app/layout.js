@@ -8,6 +8,7 @@ import ChatSidePanel from '@/components/features/ChatSidePanel';
 import { NoteProvider } from '@/lib/context/NoteContext';
 import React from 'react';
 import CompanionHeader from '@/components/CompanionHeader';
+import AppSidebar from '@/components/features/AppSidebar';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +39,14 @@ export default function RootLayout({ children }) {
             <ViewModeProvider>
               <NoteProvider>
                 <ChatProvider>
-                  <CompanionHeader />
-                  {children}
-                  <ChatSidePanel />
+                  <div style={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
+                    <AppSidebar />
+                    <div style={{ flex: 1, marginLeft: 280 }}>
+                      <CompanionHeader />
+                      {children}
+                      <ChatSidePanel />
+                    </div>
+                  </div>
                 </ChatProvider>
               </NoteProvider>
             </ViewModeProvider>
