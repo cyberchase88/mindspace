@@ -6,7 +6,6 @@ import { useCallback, useState, useEffect, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import styles from './GraphView.module.scss';
 import dynamic from 'next/dynamic';
-import cytoscape from 'cytoscape';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -50,8 +49,6 @@ function buildGraphData(notes) {
 
 export default function GraphView() {
   const [selectedNode, setSelectedNode] = useState(null);
-  const [useCytoscape, setUseCytoscape] = useState(false);
-  const cyRef = useRef(null);
   const fgRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const { data: notes, isLoading, error } = useQuery({
@@ -70,110 +67,6 @@ export default function GraphView() {
 
   const graphData = notes ? buildGraphData(notes) : { nodes: [], links: [] };
 
-  useEffect(() => {
-    if (useCytoscape && cyRef.current) {
-      console.log('Cytoscape graphData:', graphData);
-      cyRef.current.innerHTML = '';
-      const cy = cytoscape({
-        container: cyRef.current,
-        elements: [
-          ...graphData.nodes.map(node => ({ data: { id: String(node.id), label: node.name } })),
-          ...graphData.links.map(link => ({ data: { source: String(link.source), target: String(link.target) } })),
-        ],
-        style: [
-          {
-            selector: 'node',
-            style: {
-              'background-color': '#4dabf7',
-              'border-width': 3,
-              'border-color': '#1976d2',
-              'label': 'data(label)',
-              'color': '#222',
-              'font-family': 'Inter, Nunito, Arial, sans-serif',
-              'font-size': 16,
-              'font-weight': 400,
-              'text-valign': 'center',
-              'text-halign': 'center',
-              'text-outline-width': 2,
-              'text-outline-color': '#fff',
-              'width': 44,
-              'height': 44,
-              'shape': 'ellipse',
-              'transition-property': 'background-color, border-color, width, height, color',
-              'transition-duration': '0.5s',
-              'opacity': 1,
-            },
-          },
-          {
-            selector: 'node:selected',
-            style: {
-              'background-color': '#fffde7',
-              'border-color': '#b8c4b9',
-              'color': '#1976d2',
-              'width': 54,
-              'height': 54,
-              'font-size': 18,
-              'opacity': 1,
-            },
-          },
-          {
-            selector: 'edge',
-            style: {
-              'width': 2,
-              'line-color': '#1976d2',
-              'curve-style': 'bezier',
-              'opacity': 0.7,
-              'target-arrow-shape': 'none',
-              'transition-property': 'line-color, opacity',
-              'transition-duration': '0.5s',
-            },
-          },
-        ],
-        layout: {
-          name: 'cose',
-          animate: true,
-          randomize: false,
-          fit: true,
-          padding: 60,
-          nodeRepulsion: 12000,
-          idealEdgeLength: 120,
-          edgeElasticity: 0.2,
-          gravity: 0.25,
-        },
-        minZoom: 0.4,
-        maxZoom: 2.5,
-        wheelSensitivity: 0.2,
-      });
-      cy.nodes().forEach((node, i) => {
-        setTimeout(() => {
-          node.animate({ style: { opacity: 1 } }, { duration: 700, easing: 'ease-in-out' });
-        }, 100 + i * 60);
-      });
-      cy.on('tap', 'node', (evt) => {
-        const node = evt.target;
-        setSelectedNode({ id: node.id(), name: node.data('label') });
-      });
-      cy.on('tap', (evt) => {
-        if (evt.target === cy) setSelectedNode(null);
-      });
-      cyRef.current.cyInstance = cy;
-    }
-  }, [useCytoscape, graphData]);
-
-  useEffect(() => {
-    // Apply forced transparent background and no border/box-shadow to all relevant elements in the graph container
-    const graphContainer = document.querySelector(`.${styles.graphContainer}`);
-    if (graphContainer) {
-      const elements = graphContainer.querySelectorAll('canvas, svg, div');
-      elements.forEach(el => {
-        el.style.backgroundColor = 'transparent';
-        el.style.background = 'none';
-        el.style.boxShadow = 'none';
-        el.style.border = 'none';
-      });
-    }
-  }, [useCytoscape, graphData]);
-
   const handleNodeClick = useCallback((node) => {
     setSelectedNode(node);
   }, []);
@@ -187,76 +80,67 @@ export default function GraphView() {
 
   return (
     <div className={styles.container}>
-      <div style={{ marginBottom: 12 }}>
-        <button onClick={() => setUseCytoscape((v) => !v)}>
-          Switch to {useCytoscape ? 'ForceGraph2D' : 'Cytoscape.js'}
-        </button>
-      </div>
       <div className={styles.graphContainer}>
-        {useCytoscape ? (
-          <div ref={cyRef} style={{ width: '100%', height: '65vh', background: 'transparent' }} />
-        ) : (
-          <ForceGraph2D
-            ref={fgRef}
-            graphData={graphData}
-            nodeColor={node => node.id === selectedNode?.id ? '#ff6b6b' : '#4dabf7'}
-            nodeRelSize={6}
-            linkWidth={1}
-            linkColor={() => '#adb5bd'}
-            onNodeClick={handleNodeClick}
-            onBackgroundClick={handleBackgroundClick}
-            cooldownTicks={100}
-            backgroundColor="rgba(0,0,0,0)"
-            width={dimensions.width}
-            height={dimensions.height}
-            onEngineStop={() => fgRef.current && fgRef.current.zoomToFit(400)}
-            nodeCanvasObject={(node, ctx, globalScale) => {
-              // Draw the bubble (circle)
-              const isSelected = node.id === selectedNode?.id;
-              const radius = 6 * globalScale; // match nodeRelSize
-              ctx.save();
-              ctx.beginPath();
-              ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
-              ctx.fillStyle = isSelected ? '#ff6b6b' : '#3a5a40';
-              ctx.shadowColor = isSelected ? '#ffb3b3' : '#b8c4b9';
-              ctx.shadowBlur = isSelected ? 12 : 6;
-              ctx.globalAlpha = 1;
-              ctx.fill();
-              ctx.shadowBlur = 0;
-              ctx.strokeStyle = isSelected ? '#ff6b6b' : '#3a5a40';
-              ctx.lineWidth = isSelected ? 2.5 : 1.5;
-              ctx.stroke();
-              ctx.restore();
+        <ForceGraph2D
+          ref={fgRef}
+          graphData={graphData}
+          nodeColor={node => node.id === selectedNode?.id ? '#ff6b6b' : '#4dabf7'}
+          nodeRelSize={6}
+          linkWidth={1}
+          linkColor={() => '#adb5bd'}
+          onNodeClick={handleNodeClick}
+          onBackgroundClick={handleBackgroundClick}
+          cooldownTicks={100}
+          backgroundColor="rgba(0,0,0,0)"
+          width={dimensions.width}
+          height={dimensions.height}
+          onEngineStop={() => fgRef.current && fgRef.current.zoomToFit(400)}
+          nodeCanvasObject={(node, ctx, globalScale) => {
+            // Draw the bubble (circle)
+            const isSelected = node.id === selectedNode?.id;
+            const radius = 6 * globalScale; // match nodeRelSize
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = isSelected ? '#ff6b6b' : '#3a5a40';
+            ctx.shadowColor = isSelected ? '#ffb3b3' : '#b8c4b9';
+            ctx.shadowBlur = isSelected ? 12 : 6;
+            ctx.globalAlpha = 1;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = isSelected ? '#ff6b6b' : '#3a5a40';
+            ctx.lineWidth = isSelected ? 2.5 : 1.5;
+            ctx.stroke();
+            ctx.restore();
 
-              // Draw the label with dynamic opacity
-              const label = node.name;
-              const fontSize = 14 / globalScale;
-              let opacity = 0;
-              if (globalScale > 2.5) {
-                opacity = 1;
-              } else if (globalScale > 1.2) {
-                opacity = 0.5 + 0.5 * ((globalScale - 1.2) / (2.5 - 1.2));
-              } else if (globalScale > 0.7) {
-                opacity = 0.3 * ((globalScale - 0.7) / (1.2 - 0.7));
-              } else {
-                opacity = 0;
-              }
-              if (opacity > 0) {
-                ctx.save();
-                ctx.globalAlpha = opacity;
-                ctx.font = `${fontSize}px Arial, sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = '#222';
-                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-                ctx.lineWidth = 4 / globalScale;
-                ctx.strokeText(label, node.x, node.y - radius - 10 / globalScale);
-                ctx.fillText(label, node.x, node.y - radius - 10 / globalScale);
-                ctx.restore();
-              }
-            }}
-          />
-        )}
+            // Draw the label with dynamic opacity
+            const label = node.name;
+            const fontSize = 14 / globalScale;
+            let opacity = 0;
+            if (globalScale > 2.5) {
+              opacity = 1;
+            } else if (globalScale > 1.2) {
+              opacity = 0.5 + 0.5 * ((globalScale - 1.2) / (2.5 - 1.2));
+            } else if (globalScale > 0.7) {
+              opacity = 0.3 * ((globalScale - 0.7) / (1.2 - 0.7));
+            } else {
+              opacity = 0;
+            }
+            if (opacity > 0) {
+              ctx.save();
+              ctx.globalAlpha = opacity;
+              ctx.font = `${fontSize}px Arial, sans-serif`;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillStyle = '#222';
+              ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+              ctx.lineWidth = 4 / globalScale;
+              ctx.strokeText(label, node.x, node.y - radius - 10 / globalScale);
+              ctx.fillText(label, node.x, node.y - radius - 10 / globalScale);
+              ctx.restore();
+            }
+          }}
+        />
       </div>
       {selectedNode && (
         <div className={styles.sidebar}>
