@@ -40,7 +40,28 @@ export default function ReviewSession({ userId, noteIds }) {
   }, [currentIdx, questions]);
 
   if (loading) return <div>Loading questions...</div>;
-  if (!questions.length) return <div style={{ color: '#207520', fontWeight: 600, fontSize: 22 }}>No questions due for review!</div>;
+  if (!questions.length) return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '80vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1,
+        background: 'inherit',
+        transform: 'translateY(-18vh)', // move further above center
+      }}
+    >
+      <span style={{ color: '#207520', fontWeight: 600, fontSize: 22 }}>
+        No questions due for review!
+      </span>
+    </div>
+  );
 
   const currentQ = questions[currentIdx];
 
