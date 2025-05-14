@@ -3,6 +3,45 @@
 [![Project Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
 
+---
+
+## 🚀 Run Anywhere with Docker
+
+Run Mindspace on their machine using Docker just following these steps:
+
+1. **Install Docker**
+   - Download and install Docker Desktop from [docker.com](https://www.docker.com/products/docker-desktop/).
+
+2. **Clone this repository**
+   ```bash
+   git clone <your-repo-url>
+   cd mindspace
+   ```
+
+3. **Add a `.env` file**
+   - Create a file named `.env` in the project root with the following variables:
+     ```
+     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+     OPENAI_API_KEY=your_openai_key
+     ```
+   - (You can copy from `.env.example` if provided.)
+
+4. **Build the Docker image**
+   ```bash
+   docker build -t mindspace .
+   ```
+
+5. **Run the Docker container**
+   ```bash
+   docker run --env-file .env -p 3000:3000 mindspace
+   ```
+
+6. **Open your browser**
+   - Go to [http://localhost:3000](http://localhost:3000)
+
+---
+
 Mindspace is a gentle, joyful space to grow your thinking. It's like Obsidian meets Anki meets ChatGPT meets Calm/Headspace — a calming companion for learning, remembering, and integrating ideas into your life, and also a space to immerse yourself in your thoughts/feelings/insights.
 
 Whether you're exploring a book, working through an idea, or building a new habit, Mindspace helps you:

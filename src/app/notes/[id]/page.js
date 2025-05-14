@@ -88,7 +88,7 @@ export default function NoteDetailPage() {
     };
     document.addEventListener('click', handler);
     return () => document.removeEventListener('click', handler);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (note) setCurrentNote(note);

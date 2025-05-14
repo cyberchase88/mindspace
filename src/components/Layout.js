@@ -2,7 +2,7 @@ import '@styles/globals.scss';
 import { useChat } from '@/components/features/ChatProvider';
 
 export default function Layout({ children }) {
-  const { isOpen, setIsOpen } = useChat ? useChat() : { isOpen: false, setIsOpen: () => {} };
+  const { isOpen, setIsOpen } = useChat();
   return (
     <div className="layout">
       <header
@@ -52,6 +52,9 @@ export default function Layout({ children }) {
       <footer className="footer">
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Mindspace. All rights reserved.</p>
+          <p style={{ fontSize: '0.9em', color: '#888', marginTop: 8 }}>
+            Running in: <b>{process.env.NODE_ENV}</b>
+          </p>
         </div>
       </footer>
     </div>

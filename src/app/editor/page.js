@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import MarkdownEditor from '@/components/common/MarkdownEditor';
-import pageStyles from '../page.module.scss';
+import pageStyles from '../../app/page.module.scss';
 
 export default function EditorPage() {
   const [content, setContent] = useState('');

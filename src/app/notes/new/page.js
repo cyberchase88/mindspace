@@ -6,7 +6,7 @@ import Link from 'next/link';
 import TipTapEditor from '@/components/common/TipTapEditor';
 import { supabase, createNoteLink, getNoteLinksForNote } from '@/lib/supabase';
 import styles from './new.module.scss';
-import pageStyles from '../../page.module.scss';
+import pageStyles from '../../../app/page.module.scss';
 import { useNote } from '@/lib/context/NoteContext';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds

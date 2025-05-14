@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.scss';
-import pageStyles from '../../page.module.scss';
+import pageStyles from '../../app/page.module.scss';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
