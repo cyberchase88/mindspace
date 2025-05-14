@@ -27,7 +27,7 @@ export default function NoteSelection({ onStartReview, userId }) {
     if (selected.length > 0) onStartReview(selected);
   }
 
-  if (loading) return <div>Loading notes...</div>;
+  if (loading) return <div style={{ color: '#207520', fontSize: 13, fontStyle: 'italic' }}>Loading notes...</div>;
   if (!notes.length) return <div>No notes available for review.</div>;
 
   return (

@@ -39,7 +39,7 @@ export default function ReviewSession({ userId, noteIds }) {
     }
   }, [currentIdx, questions]);
 
-  if (loading) return <div>Loading questions...</div>;
+  if (loading) return <div style={{ color: '#207520', fontSize: 13, fontStyle: 'italic' }}>Loading questions...</div>;
   if (!questions.length) return (
     <div
       style={{
