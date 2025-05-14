@@ -32,7 +32,6 @@ export default function LoginPage() {
   return (
     <div className={pageStyles.homePage}>
       <header className={pageStyles.gardenHeader} style={{ maxWidth: 400, margin: '3rem auto' }}>
-        <h1 style={{ marginBottom: '2rem' }}>Welcome to Mindspace</h1>
         <form onSubmit={handleSubmit} className={styles.form} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {error && <div className={styles.error}>{error}</div>}
           <div className={styles.formGroup}>
