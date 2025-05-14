@@ -40,7 +40,7 @@ export default function ReviewSession({ userId, noteIds }) {
   }, [currentIdx, questions]);
 
   if (loading) return <div>Loading questions...</div>;
-  if (!questions.length) return <div>No questions due for review!</div>;
+  if (!questions.length) return <div style={{ color: '#207520', fontWeight: 600, fontSize: 22 }}>No questions due for review!</div>;
 
   const currentQ = questions[currentIdx];
 
