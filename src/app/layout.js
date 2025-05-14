@@ -4,9 +4,10 @@ import QueryProvider from '@/lib/providers/QueryProvider';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { ViewModeProvider } from '@/lib/context/ViewModeContext';
 import { ChatProvider } from '@/components/features/ChatProvider';
-import FloatingChatButton from '@/components/features/FloatingChatButton';
 import ChatSidePanel from '@/components/features/ChatSidePanel';
 import { NoteProvider } from '@/lib/context/NoteContext';
+import React from 'react';
+import CompanionHeader from '@/components/CompanionHeader';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,8 @@ export default function RootLayout({ children }) {
             <ViewModeProvider>
               <NoteProvider>
                 <ChatProvider>
+                  <CompanionHeader />
                   {children}
-                  <FloatingChatButton />
                   <ChatSidePanel />
                 </ChatProvider>
               </NoteProvider>

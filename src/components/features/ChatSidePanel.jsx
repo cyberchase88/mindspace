@@ -84,9 +84,13 @@ export default function ChatSidePanel() {
     <aside className={styles.panel} ref={panelRef} role="dialog" aria-modal="true" tabIndex={-1}>
       <div className={styles.dragHandle} ref={dragRef} aria-label="Resize chat panel" tabIndex={0} />
       <header className={styles.header}>
-        <span className={styles.title}>AI Chat Assistant</span>
+        <span className={styles.title}>Companion Mode</span>
         <button className={styles.closeBtn} aria-label="Close chat" onClick={() => setIsOpen(false)}>&times;</button>
       </header>
+      <div className={styles.greeting}>
+        🌿 Hi there. I'm here to help you reflect, remember, and reconnect with your thoughts.<br />
+        Ask me anything — from reviewing a note to revisiting a memory.
+      </div>
       <div className={styles.messages} ref={messagesRef}>
         {messages.length === 0 && <div className={styles.empty}>No messages yet. Ask me anything!</div>}
         {messages.map((msg, i) => (

@@ -8,13 +8,13 @@ export default function FloatingChatButton() {
   return (
     <button
       className={styles.floatingButton}
-      aria-label={isOpen ? 'Close AI Chat' : 'Open AI Chat'}
+      aria-label={isOpen ? 'Close Companion Mode' : 'Open Companion Mode'}
       onClick={() => setIsOpen((open) => !open)}
       tabIndex={0}
       type="button"
     >
       <span aria-hidden="true" className={styles.icon}>💬</span>
-      <span className={styles.text}>Chat with AI</span>
+      <span className={styles.text}>Companion Mode</span>
     </button>
   );
 } 
