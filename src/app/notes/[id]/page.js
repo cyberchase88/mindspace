@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { supabase, getBacklinksForNote, getNoteById, getStaticUserId } from '@/lib/supabase';
 import styles from './note.module.scss';
 import DOMPurify from 'dompurify';
+import { marked } from 'marked';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { useNote } from '@/lib/context/NoteContext';
 import TipTapEditor from '@/components/common/TipTapEditor';
@@ -167,7 +168,7 @@ export default function NoteDetailPage() {
     <div className={styles.pageBg}>
       <div className={styles.container}>
         <header className={styles.header}>
-          <Link href="/" className={styles.backButton}>
+          <Link href="/notes" className={styles.backButton}>
             ← Back to Notes
           </Link>
           {isEditing ? (
@@ -226,9 +227,12 @@ export default function NoteDetailPage() {
               saveNote={handleSave}
             />
           ) : (
-            <div className={styles.noteContent}>
-              <MarkdownRenderer content={note.content || 'No content yet.'} />
-            </div>
+            <div
+              className={styles.noteContent}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(marked(note.content || 'No content yet.')),
+              }}
+            />
           )}
           <div className={styles.metadata}>
             Created: {new Date(note.created_at).toLocaleString()}
