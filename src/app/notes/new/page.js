@@ -98,6 +98,30 @@ export default function NewNotePage() {
       console.log('Note saved successfully:', data);
       setCurrentNote(data);
 
+      // Trigger AI question generation after creating a new note
+      if (!noteId) {
+        try {
+          const userId = require('@/lib/supabase').getStaticUserId();
+          const resp = await fetch('/api/ai-questions/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              note_id: data.id,
+              user_id: userId,
+              note_content: content,
+            }),
+          });
+          if (!resp.ok) {
+            const err = await resp.json();
+            console.error('Failed to generate AI questions:', err.error || resp.statusText);
+          } else {
+            console.log('AI questions generated for note', data.id);
+          }
+        } catch (err) {
+          console.error('Error calling AI question generation API:', err);
+        }
+      }
+
       // Only process links if requested (manual save)
       if (processLinks) {
         const noteIdToUse = data.id;

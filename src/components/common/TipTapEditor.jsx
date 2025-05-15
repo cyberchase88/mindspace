@@ -140,6 +140,32 @@ function RememberToggleSwitch({ onAutoSave }) {
       const data = await res.json();
       if (res.ok) {
         setRemembered(!!data.remembered);
+        // If enabling spaced repetition, trigger AI question generation
+        if (checked) {
+          // Check if AI questions already exist for this note
+          const aiQRes = await fetch(`/api/ai-questions/review?user_id=${userId}&note_ids=${currentNote.id}`);
+          const aiQData = await aiQRes.json();
+          if (!aiQData.questions || aiQData.questions.length === 0) {
+            // No AI questions exist, so generate them
+            const genRes = await fetch('/api/ai-questions/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                note_id: currentNote.id,
+                user_id: userId,
+                note_content: currentNote.content,
+              }),
+            });
+            if (!genRes.ok) {
+              const err = await genRes.json();
+              console.error('Failed to generate AI questions:', err.error || genRes.statusText);
+            } else {
+              console.log('AI questions generated for note', currentNote.id);
+            }
+          } else {
+            console.log('AI questions already exist for note', currentNote.id);
+          }
+        }
       } else {
         setError(data.error || 'Failed to update');
       }
