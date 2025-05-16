@@ -8,7 +8,8 @@ import { supabase, createNoteLink, getNoteLinksForNote } from '@/lib/supabase';
 import styles from './new.module.scss';
 import pageStyles from '../../../app/page.module.scss';
 import { useNote } from '@/lib/context/NoteContext';
-import AddToGoogleCalendarButton from '@/components/features/AddToGoogleCalendarButton';
+import CalendarEventModal from '@/components/common/CalendarEventModal';
+import { addEventToGoogleCalendar } from '@/lib/addEventToGoogleCalendar';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
 
@@ -54,6 +55,7 @@ export default function NewNotePage() {
   const [eventSuggestion, setEventSuggestion] = useState(null);
   const [suggestionLoading, setSuggestionLoading] = useState(false);
   const [suggestionError, setSuggestionError] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
   const { setCurrentNote } = useNote();
 
@@ -235,30 +237,56 @@ export default function NewNotePage() {
           </div>
         )}
       </header>
-      <div className={styles.editor}>
-        <TipTapEditor
-          content={content}
-          onChange={setContent}
-          placeholder="Start writing your note..."
-        />
-      </div>
-      {/* Event Suggestion Section */}
-      {suggestionLoading ? (
-        <div>Loading event suggestion...</div>
-      ) : eventSuggestion ? (
-        <div style={{ margin: '16px 0' }}>
-          <AddToGoogleCalendarButton
-            userId={require('@/lib/supabase').getStaticUserId()}
-            isGoogleConnected={true} // TODO: wire up real auth state
-            suggestion={eventSuggestion.suggestion}
-            suggestionType={eventSuggestion.type}
-            defaultRecurrence={eventSuggestion.defaultRecurrence}
-            defaultTime={eventSuggestion.defaultTime}
+      <div className={styles.container}>
+        {/* Subtle calendar icon, always visible */}
+        <span
+          className={styles.calendarIcon}
+          title="Add to Google Calendar"
+          onClick={() => setModalOpen(true)}
+          tabIndex={0}
+          role="button"
+          aria-label="Add to Google Calendar"
+          style={{ position: 'absolute', top: 24, right: 32, zIndex: 2 }}
+        >
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="14" height="12" rx="2" fill="#588157" fillOpacity="0.18"/>
+            <rect x="3" y="5" width="14" height="12" rx="2" stroke="#588157" strokeWidth="1.2"/>
+            <rect x="7" y="9" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.5"/>
+            <rect x="7" y="13" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.3"/>
+            <rect x="6" y="2" width="2" height="4" rx="1" fill="#588157"/>
+            <rect x="12" y="2" width="2" height="4" rx="1" fill="#588157"/>
+          </svg>
+        </span>
+        <div className={styles.editor}>
+          <TipTapEditor
+            content={content}
+            onChange={setContent}
+            placeholder="Start writing your note..."
           />
         </div>
-      ) : suggestionError ? (
-        <div style={{ color: 'red' }}>{suggestionError}</div>
-      ) : null}
+        <CalendarEventModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onConfirm={async ({ title, date, time, recurrence }) => {
+            setModalOpen(false);
+            const result = await addEventToGoogleCalendar({
+              userId: require('@/lib/supabase').getStaticUserId(),
+              title,
+              date,
+              time,
+              recurrence,
+              description: '',
+            });
+            if (result && result.error) {
+              alert('Error: ' + result.error);
+            } else {
+              alert('Event added to Google Calendar!');
+            }
+          }}
+          initialSuggestion={title}
+          type="one_time_action"
+        />
+      </div>
     </div>
   );
 } 

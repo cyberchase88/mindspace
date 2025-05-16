@@ -138,6 +138,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .titleInput {
@@ -202,6 +203,30 @@
   border-top: 1px solid #e2e8f0;
   padding-top: 1rem;
   margin-top: auto;
+}
+
+.calendarIcon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.2rem;
+  opacity: 0.18;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarIcon:hover,
+.calendarIcon:focus {
+  opacity: 0.85;
+  transform: scale(1.08);
 }
 
 @media (max-width: 900px) {

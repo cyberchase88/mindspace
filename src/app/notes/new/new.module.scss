@@ -4,6 +4,7 @@
   padding: 2rem;
   color: var(--text-color);
   background-color: var(--background-color);
+  position: relative;
 }
 
 .header {
@@ -177,4 +178,28 @@
     background-color: #f1f5f9;
     text-decoration: none;
   }
+}
+
+.calendarIcon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.2rem;
+  opacity: 0.18;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarIcon:hover,
+.calendarIcon:focus {
+  opacity: 0.85;
+  transform: scale(1.08);
 } 

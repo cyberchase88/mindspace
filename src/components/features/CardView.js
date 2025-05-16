@@ -7,8 +7,9 @@ import Masonry from 'react-masonry-css';
 import styles from './CardView.module.scss';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
-import AddToGoogleCalendarButton from './AddToGoogleCalendarButton';
 import { useEffect, useState } from 'react';
+import CalendarEventModal from '../common/CalendarEventModal';
+import { addEventToGoogleCalendar } from '@/lib/addEventToGoogleCalendar';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -37,6 +38,8 @@ export default function CardView() {
 
   // Google connection state
   const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTitle, setSelectedTitle] = useState('');
 
   useEffect(() => {
     async function checkGoogleConnection() {
@@ -72,17 +75,28 @@ export default function CardView() {
                   __html: DOMPurify.sanitize(marked(note.content.slice(0, 200) + '...')),
                 }}
               />
-              <AddToGoogleCalendarButton
-                userId={HARDCODED_USER_ID}
-                isGoogleConnected={isGoogleConnected}
-                suggestion={{
-                  type: 'recurring',
-                  title: 'Morning Yoga',
-                  description: '10 min morning yoga',
-                  startDateTime: '2025-05-16T09:00:00',
-                  endDateTime: '2025-05-16T09:10:00',
+              {/* Subtle calendar icon, only visible on hover */}
+              <span
+                className={styles.calendarIcon}
+                title="Add to Google Calendar"
+                onClick={e => {
+                  e.preventDefault();
+                  setSelectedTitle(note.title);
+                  setModalOpen(true);
                 }}
-              />
+                tabIndex={0}
+                role="button"
+                aria-label="Add to Google Calendar"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ pointerEvents: 'auto' }}>
+                  <rect x="3" y="5" width="14" height="12" rx="2" fill="#588157" fillOpacity="0.18"/>
+                  <rect x="3" y="5" width="14" height="12" rx="2" stroke="#588157" strokeWidth="1.2"/>
+                  <rect x="7" y="9" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.5"/>
+                  <rect x="7" y="13" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.3"/>
+                  <rect x="6" y="2" width="2" height="4" rx="1" fill="#588157"/>
+                  <rect x="12" y="2" width="2" height="4" rx="1" fill="#588157"/>
+                </svg>
+              </span>
               <div className={styles.cardFooter}>
                 <time dateTime={note.created_at}>
                   {new Date(note.created_at).toLocaleDateString()}
@@ -92,6 +106,28 @@ export default function CardView() {
           </Link>
         ))}
       </Masonry>
+      <CalendarEventModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={async ({ title, date, time, recurrence }) => {
+          setModalOpen(false);
+          const result = await addEventToGoogleCalendar({
+            userId: HARDCODED_USER_ID,
+            title,
+            date,
+            time,
+            recurrence,
+            description: '',
+          });
+          if (result && result.error) {
+            alert('Error: ' + result.error);
+          } else {
+            alert('Event added to Google Calendar!');
+          }
+        }}
+        initialSuggestion={selectedTitle}
+        type="one_time_action"
+      />
     </div>
   );
 } 
