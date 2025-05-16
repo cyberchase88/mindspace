@@ -10,7 +10,19 @@ import { supabase } from './supabase';
  * @returns {Promise<object>} The upserted token row or error.
  */
 export async function storeTokensForUser(userId, tokens, provider = 'google') {
-  const { access_token, refresh_token, expires_at, scope, token_type } = tokens;
+  let { access_token, refresh_token, expires_at, scope, token_type } = tokens;
+  // If refresh_token is missing, fetch the existing one
+  if (!refresh_token) {
+    const { data: existing, error: getError } = await supabase
+      .from('oauth_tokens')
+      .select('refresh_token')
+      .eq('user_id', userId)
+      .eq('provider', provider)
+      .single();
+    if (existing && existing.refresh_token) {
+      refresh_token = existing.refresh_token;
+    }
+  }
   const { data, error } = await supabase
     .from('oauth_tokens')
     .upsert([
