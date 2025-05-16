@@ -7,6 +7,7 @@ import Masonry from 'react-masonry-css';
 import styles from './CardView.module.scss';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
+import AddToGoogleCalendarButton from './AddToGoogleCalendarButton';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -49,6 +50,17 @@ export default function CardView() {
                 className={styles.cardContent}
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(marked(note.content.slice(0, 200) + '...')),
+                }}
+              />
+              <AddToGoogleCalendarButton
+                userId="demo-user"
+                isGoogleConnected={false}
+                suggestion={{
+                  type: 'recurring',
+                  title: 'Morning Yoga',
+                  description: '10 min morning yoga',
+                  startDateTime: '2024-06-10T08:00:00-07:00',
+                  endDateTime: '2024-06-10T08:10:00-07:00',
                 }}
               />
               <div className={styles.cardFooter}>
