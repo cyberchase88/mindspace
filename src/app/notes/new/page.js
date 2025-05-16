@@ -8,6 +8,7 @@ import { supabase, createNoteLink, getNoteLinksForNote } from '@/lib/supabase';
 import styles from './new.module.scss';
 import pageStyles from '../../../app/page.module.scss';
 import { useNote } from '@/lib/context/NoteContext';
+import AddToGoogleCalendarButton from '@/components/features/AddToGoogleCalendarButton';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
 
@@ -50,6 +51,9 @@ export default function NewNotePage() {
   const [error, setError] = useState(null);
   const [lastSaved, setLastSaved] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [eventSuggestion, setEventSuggestion] = useState(null);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  const [suggestionError, setSuggestionError] = useState(null);
   const router = useRouter();
   const { setCurrentNote } = useNote();
 
@@ -134,6 +138,24 @@ export default function NewNotePage() {
             console.error(`Error processing link for [[${linkTitle}]]:`, err);
           }
         }
+      }
+
+      // Fetch event suggestion after save
+      setSuggestionLoading(true);
+      setSuggestionError(null);
+      try {
+        const res = await fetch('/api/ai-questions/suggest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content })
+        });
+        const data2 = await res.json();
+        setEventSuggestion(data2.suggestion || null);
+      } catch (err) {
+        setSuggestionError('Could not fetch suggestion');
+        setEventSuggestion(null);
+      } finally {
+        setSuggestionLoading(false);
       }
     } catch (err) {
       setError(err.message);
@@ -220,6 +242,23 @@ export default function NewNotePage() {
           placeholder="Start writing your note..."
         />
       </div>
+      {/* Event Suggestion Section */}
+      {suggestionLoading ? (
+        <div>Loading event suggestion...</div>
+      ) : eventSuggestion ? (
+        <div style={{ margin: '16px 0' }}>
+          <AddToGoogleCalendarButton
+            userId={require('@/lib/supabase').getStaticUserId()}
+            isGoogleConnected={true} // TODO: wire up real auth state
+            suggestion={eventSuggestion.suggestion}
+            suggestionType={eventSuggestion.type}
+            defaultRecurrence={eventSuggestion.defaultRecurrence}
+            defaultTime={eventSuggestion.defaultTime}
+          />
+        </div>
+      ) : suggestionError ? (
+        <div style={{ color: 'red' }}>{suggestionError}</div>
+      ) : null}
     </div>
   );
 } 

@@ -11,6 +11,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { useNote } from '@/lib/context/NoteContext';
 import TipTapEditor from '@/components/common/TipTapEditor';
 import { calculateNextReview } from '@/lib/spacedRepetition';
+import AddToGoogleCalendarButton from '@/components/features/AddToGoogleCalendarButton';
 
 export default function NoteDetailPage() {
   const { id } = useParams();
@@ -30,6 +31,9 @@ export default function NoteDetailPage() {
   const [remembered, setRemembered] = useState(false);
   const [srLoading, setSrLoading] = useState(true);
   const [srError, setSrError] = useState(null);
+  const [eventSuggestion, setEventSuggestion] = useState(null);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  const [suggestionError, setSuggestionError] = useState(null);
 
   useEffect(() => {
     async function fetchNote() {
@@ -113,6 +117,29 @@ export default function NoteDetailPage() {
     }
     if (id) fetchSR();
   }, [id]);
+
+  useEffect(() => {
+    async function fetchSuggestion() {
+      if (!note) return;
+      setSuggestionLoading(true);
+      setSuggestionError(null);
+      try {
+        const res = await fetch('/api/ai-questions/suggest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: note.title, content: note.content })
+        });
+        const data = await res.json();
+        setEventSuggestion(data.suggestion || null);
+      } catch (err) {
+        setSuggestionError('Could not fetch suggestion');
+        setEventSuggestion(null);
+      } finally {
+        setSuggestionLoading(false);
+      }
+    }
+    if (note) fetchSuggestion();
+  }, [note]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -257,6 +284,24 @@ export default function NoteDetailPage() {
               <SRForecast spacedRepetition={spacedRepetition} />
             ) : null}
           </div>
+
+          {/* Event Suggestion Section */}
+          {suggestionLoading ? (
+            <div>Loading event suggestion...</div>
+          ) : eventSuggestion ? (
+            <div style={{ margin: '16px 0' }}>
+              <AddToGoogleCalendarButton
+                userId={getStaticUserId()}
+                isGoogleConnected={true} // TODO: wire up real auth state
+                suggestion={eventSuggestion.suggestion}
+                suggestionType={eventSuggestion.type}
+                defaultRecurrence={eventSuggestion.defaultRecurrence}
+                defaultTime={eventSuggestion.defaultTime}
+              />
+            </div>
+          ) : suggestionError ? (
+            <div style={{ color: 'red' }}>{suggestionError}</div>
+          ) : null}
         </div>
         {/* Backlinks Section */}
         {backlinkNotes.length > 0 && (
