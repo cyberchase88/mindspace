@@ -196,7 +196,7 @@ export default function NewNotePage() {
   return (
     <div className={pageStyles.homePage}>
       <header className={pageStyles.gardenHeader} style={{ marginBottom: '2rem' }}>
-        <Link href="/" className={styles.backButton}>
+        <Link href="/notes" className={styles.backButton}>
           ← Back to Notes
         </Link>
         <input
