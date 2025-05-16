@@ -13,7 +13,7 @@ export default function AddToGoogleCalendarButton({ userId, suggestion, isGoogle
 
       const event = suggestionToEvent(suggestion);
 
-      const res = await fetch('/api/calendar/add-event', {
+      const res = await fetch('/api/calendar/app-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, event })
