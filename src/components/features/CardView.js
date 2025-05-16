@@ -8,6 +8,7 @@ import styles from './CardView.module.scss';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import AddToGoogleCalendarButton from './AddToGoogleCalendarButton';
+import { useEffect, useState } from 'react';
 
 async function fetchNotes() {
   const { data, error } = await supabase
@@ -26,11 +27,30 @@ const breakpointColumns = {
   700: 1,
 };
 
+const HARDCODED_USER_ID = 'a84fe585-37ac-4bf1-bc17-5ba87c228555';
+
 export default function CardView() {
   const { data: notes, isLoading, error } = useQuery({
     queryKey: ['notes'],
     queryFn: fetchNotes,
   });
+
+  // Google connection state
+  const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+
+  useEffect(() => {
+    async function checkGoogleConnection() {
+      // Check if the user has Google tokens
+      const { data, error } = await supabase
+        .from('oauth_tokens')
+        .select('*')
+        .eq('user_id', HARDCODED_USER_ID)
+        .eq('provider', 'google')
+        .single();
+      setIsGoogleConnected(!!(data && data.access_token));
+    }
+    checkGoogleConnection();
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -53,14 +73,14 @@ export default function CardView() {
                 }}
               />
               <AddToGoogleCalendarButton
-                userId="demo-user"
-                isGoogleConnected={false}
+                userId={HARDCODED_USER_ID}
+                isGoogleConnected={isGoogleConnected}
                 suggestion={{
                   type: 'recurring',
                   title: 'Morning Yoga',
                   description: '10 min morning yoga',
-                  startDateTime: '2024-06-10T08:00:00-07:00',
-                  endDateTime: '2024-06-10T08:10:00-07:00',
+                  startDateTime: '2025-05-16T09:00:00',
+                  endDateTime: '2025-05-16T09:10:00',
                 }}
               />
               <div className={styles.cardFooter}>

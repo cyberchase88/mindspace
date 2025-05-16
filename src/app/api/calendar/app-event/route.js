@@ -3,7 +3,7 @@ import { getTokensForUser, storeTokensForUser } from '../../../../lib/tokenStore
 
 export async function POST(req) {
   try {
-    const { userId, event } = await req.json();
+    const { userId, event, calendarId } = await req.json();
     const tokens = await getTokensForUser(userId);
     if (!tokens) {
       return new Response(JSON.stringify({ error: 'No Google tokens found for user.' }), { status: 401 });
@@ -32,7 +32,7 @@ export async function POST(req) {
 
     try {
       const response = await calendar.events.insert({
-        calendarId: 'primary',
+        calendarId: calendarId || 'primary',
         requestBody: event
       });
       return Response.json({ success: true, eventId: response.data.id, refreshed });
