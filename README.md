@@ -46,8 +46,8 @@ Mindspace is a gentle, joyful space to grow your thinking. It's like Obsidian me
 
 Whether you're exploring a book, working through an idea, or building a new habit, Mindspace helps you:
 - 🌱 Capture ideas in connected notes
-- 🧠 Understand and retain them through spaced recall
-- 🔄 Turn insights into real-life tasks or reminders
+- 🧠 Understand and retain them through strategies proven to accelerate learning(primarily, active recall and spaced repetition)
+- 🔄 Take insights and truly integrate them into your life through real-life tasks or reminders
 
 ## 🌟 Why Mindspace?
 Because you deserve a learning experience that's not just effective — but beautiful, meaningful, and playful too.

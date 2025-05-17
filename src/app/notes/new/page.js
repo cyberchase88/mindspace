@@ -10,6 +10,7 @@ import pageStyles from '../../../app/page.module.scss';
 import { useNote } from '@/lib/context/NoteContext';
 import CalendarEventModal from '@/components/common/CalendarEventModal';
 import { addEventToGoogleCalendar } from '@/lib/addEventToGoogleCalendar';
+import AddToGoogleCalendarButton from '@/components/features/AddToGoogleCalendarButton';
 
 const AUTO_SAVE_DELAY = 2000; // 2 seconds
 
@@ -237,26 +238,27 @@ export default function NewNotePage() {
           </div>
         )}
       </header>
-      <div className={styles.container}>
-        {/* Subtle calendar icon, always visible */}
-        <span
-          className={styles.calendarIcon}
-          title="Add to Google Calendar"
-          onClick={() => setModalOpen(true)}
-          tabIndex={0}
-          role="button"
-          aria-label="Add to Google Calendar"
-          style={{ position: 'absolute', top: 24, right: 32, zIndex: 2 }}
-        >
-          <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="5" width="14" height="12" rx="2" fill="#588157" fillOpacity="0.18"/>
-            <rect x="3" y="5" width="14" height="12" rx="2" stroke="#588157" strokeWidth="1.2"/>
-            <rect x="7" y="9" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.5"/>
-            <rect x="7" y="13" width="6" height="2" rx="1" fill="#588157" fillOpacity="0.3"/>
-            <rect x="6" y="2" width="2" height="4" rx="1" fill="#588157"/>
-            <rect x="12" y="2" width="2" height="4" rx="1" fill="#588157"/>
-          </svg>
-        </span>
+      <div className={styles.container} style={{ position: 'relative' }}>
+        {/* Show AI suggestion if available */}
+        {eventSuggestion && (
+          <div className={styles.suggestionBanner} style={{ margin: '1rem 0', background: '#e9f5e1', padding: '0.5rem 1rem', borderRadius: 6, color: '#3a5a40', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span>💡 AI Suggestion: {eventSuggestion.suggestion}</span>
+            <button
+              style={{
+                background: '#588157',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                padding: '4px 12px',
+                cursor: 'pointer',
+                fontWeight: 500
+              }}
+              onClick={() => setModalOpen(true)}
+            >
+              Add to Calendar
+            </button>
+          </div>
+        )}
         <div className={styles.editor}>
           <TipTapEditor
             content={content}
@@ -264,28 +266,18 @@ export default function NewNotePage() {
             placeholder="Start writing your note..."
           />
         </div>
-        <CalendarEventModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onConfirm={async ({ title, date, time, recurrence }) => {
-            setModalOpen(false);
-            const result = await addEventToGoogleCalendar({
-              userId: require('@/lib/supabase').getStaticUserId(),
-              title,
-              date,
-              time,
-              recurrence,
-              description: '',
-            });
-            if (result && result.error) {
-              alert('Error: ' + result.error);
-            } else {
-              alert('Event added to Google Calendar!');
-            }
-          }}
-          initialSuggestion={title}
-          type="one_time_action"
-        />
+        {/* AddToGoogleCalendarButton fixed at bottom right */}
+        <div style={{ position: 'fixed', bottom: 32, right: 32, zIndex: 100 }}>
+          <AddToGoogleCalendarButton
+            userId={require('@/lib/supabase').getStaticUserId()}
+            isGoogleConnected={true}
+            suggestion={eventSuggestion?.suggestion || title}
+            suggestionType={eventSuggestion?.type || 'one_time_action'}
+            defaultRecurrence={eventSuggestion?.defaultRecurrence || ''}
+            defaultTime={eventSuggestion?.defaultTime || ''}
+            onEventAdded={() => {}}
+          />
+        </div>
       </div>
     </div>
   );
