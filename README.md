@@ -38,15 +38,16 @@ Run Mindspace on your machine by following these steps:
 
 ---
 
-Mindspace is a gentle, joyful space to grow your thinking. It's like Obsidian meets Anki meets ChatGPT meets Calm/Headspace — a calming companion for learning, remembering, and integrating ideas into your life, and also a space to immerse yourself in your thoughts/feelings/insights.
+## 🌟 Why Mindspace?
+Because you’re not just learning — you’re building a relationship with your mind.
+Mindspace helps you slow down, reflect, and remember — in a way that feels like you. No pressure. No noise. Just the right mix of structure and wonder, so what matters actually sticks.
+
+This is a gentle, joyful space to grow your thinking. It's like Obsidian meets Anki meets ChatGPT meets Calm/Headspace — a calming companion for learning, remembering, and integrating ideas into your life, and also a space to immerse yourself in your thoughts/feelings/insights.
 
 Whether you're exploring a book, working through an idea, or building a new habit, Mindspace helps you:
 - 🌱 Capture ideas in connected notes
 - 🧠 Understand and retain them through strategies proven to accelerate learning (e.g., active recall and spaced repetition)
 - 🔄 Take insights and truly integrate them into your life through real-life tasks or reminders
-
-## 🌟 Why Mindspace?
-Because you deserve a learning experience that's not just effective — but beautiful, meaningful, and playful too.
 
 ## 🛠 Tech Stack Details
 - **Frontend**: 
@@ -71,7 +72,7 @@ Because you deserve a learning experience that's not just effective — but beau
 ## 🧪 Core Principles
 - Support for Markdown note-taking
 - Active Recall + Spaced Repetition (not just passive review)
-- Inline Chat Assistant (like having GPT alongside you)
+- Inline Chat Assistant
 - Visual Zettelkasten-style link graph
 - Calendar/task integration for real-life application
 
@@ -81,23 +82,16 @@ Capture and reflect
 - Note editor with Markdown
 - AI Chat assistant (collapsible)
 - Supabase-based storage
+
+**Phase 2: Memory Garden**
 - "Remember this" toggle (for the active recall + spaced repetition features — AI will generate these questions)
-
-**Phase 2: Memory Garden**  
 - Review screen w/ spaced recall
-- Link notes manually
-- Auto-suggest related notes
+- Link notes
 
-**Phase 3: Bloom + Action**  
+**Phase 3: Visualization + Taking Action**  
 - Actionable tasks/habits from notes
 - Calendar integration
 - Graph visualization of Zettelkasten links
-
-## Run Locally
-```bash
-npm install
-npm run dev
-```
 
 
 
