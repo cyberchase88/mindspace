@@ -5,17 +5,19 @@
 
 ---
 
-## 🚀 Run Anywhere with Docker
+## 🚀 Getting Started (Local Setup)
 
-Run Mindspace on their machine using Docker just following these steps:
+Run Mindspace on your machine by following these steps:
 
-1. **Install Docker**
-   - Download and install Docker Desktop from [docker.com](https://www.docker.com/products/docker-desktop/).
-
-2. **Clone this repository**
+1. **Clone this repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/cyberchase88/mindspace.git
    cd mindspace
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
    ```
 
 3. **Add a `.env` file**
@@ -25,20 +27,14 @@ Run Mindspace on their machine using Docker just following these steps:
      NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
      OPENAI_API_KEY=your_openai_key
      ```
-   - (You can copy from `.env.example` if provided.)
 
-4. **Build the Docker image**
+4. **Run the development server**
    ```bash
-   docker build -t mindspace .
+   npm run dev
    ```
 
-5. **Run the Docker container**
-   ```bash
-   docker run --env-file .env -p 3000:3000 mindspace
-   ```
-
-6. **Open your browser**
-   - Go to [http://localhost:3000](http://localhost:3000)
+5. **Open your browser**
+   - Go to [http://localhost:3000/notes](http://localhost:3000/notes)
 
 ---
 
@@ -46,7 +42,7 @@ Mindspace is a gentle, joyful space to grow your thinking. It's like Obsidian me
 
 Whether you're exploring a book, working through an idea, or building a new habit, Mindspace helps you:
 - 🌱 Capture ideas in connected notes
-- 🧠 Understand and retain them through strategies proven to accelerate learning(primarily, active recall and spaced repetition)
+- 🧠 Understand and retain them through strategies proven to accelerate learning (e.g., active recall and spaced repetition)
 - 🔄 Take insights and truly integrate them into your life through real-life tasks or reminders
 
 ## 🌟 Why Mindspace?
@@ -68,7 +64,6 @@ Because you deserve a learning experience that's not just effective — but beau
   - Supabase Storage for file attachments
   - Supabase Realtime for live updates
 - **Development**:
-  - Docker for containerization
   - Jest + React Testing Library
   - ESLint + Prettier
   - Husky for git hooks
@@ -86,7 +81,7 @@ Capture and reflect
 - Note editor with Markdown
 - AI Chat assistant (collapsible)
 - Supabase-based storage
-- "Remember this" toggle(for the active recall + spaced repetition features- AI will generate these questions)
+- "Remember this" toggle (for the active recall + spaced repetition features — AI will generate these questions)
 
 **Phase 2: Memory Garden**  
 - Review screen w/ spaced recall
@@ -100,25 +95,10 @@ Capture and reflect
 
 ## 🐳 Run Locally
 ```bash
-# with Node
 npm install
 npm run dev
-
-# with Docker
-docker build -t mindspace .
-docker run -p 3000:3000 mindspace
-
 ```
 
-## 📊 Project Status
-- [x] Project initialization
-- [ ] Phase 1: Thought Flow (In Progress)
-- [ ] Phase 2: Memory Garden (Planned)
-- [ ] Phase 3: Bloom + Action (Planned)
-
-
-## This is a solo project.
-## No features, documentation, or setup steps are required for collaborators or team onboarding.
 
 ## 🤝 Contributing
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
