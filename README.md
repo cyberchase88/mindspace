@@ -46,7 +46,8 @@ Whether you're exploring a book, working through an idea, or building a new habi
 - 🔄 Take insights and truly integrate them into your life through real-life tasks or reminders
 
 ## 🌟 Why Mindspace?
-Because you deserve a learning experience that's not just effective — but beautiful, meaningful, and playful too.
+Because you’re not just learning — you’re building a relationship with your mind.
+Mindspace helps you slow down, reflect, and remember — in a way that feels like you. No pressure. No noise. Just the right mix of structure and wonder, so what matters actually sticks.
 
 ## 🛠 Tech Stack Details
 - **Frontend**: 
@@ -71,7 +72,7 @@ Because you deserve a learning experience that's not just effective — but beau
 ## 🧪 Core Principles
 - Support for Markdown note-taking
 - Active Recall + Spaced Repetition (not just passive review)
-- Inline Chat Assistant (like having GPT alongside you)
+- Inline Chat Assistant
 - Visual Zettelkasten-style link graph
 - Calendar/task integration for real-life application
 
@@ -88,16 +89,10 @@ Capture and reflect
 - Link notes manually
 - Auto-suggest related notes
 
-**Phase 3: Bloom + Action**  
+**Phase 3: Visualization + Taking Action**  
 - Actionable tasks/habits from notes
 - Calendar integration
 - Graph visualization of Zettelkasten links
-
-## Run Locally
-```bash
-npm install
-npm run dev
-```
 
 
 
