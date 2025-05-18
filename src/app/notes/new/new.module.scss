@@ -1,0 +1,205 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  position: relative;
+}
+
+.header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.titleInput {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1.5rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #3a5a40;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--primary-color);
+  }
+
+  &::placeholder {
+    color: #666;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+.previewButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #f8fafc;
+  color: #3a5a40;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+}
+
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #b7e4c7 0%, #95d5b2 100%);
+  color: #207520;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(120, 200, 180, 0.2);
+
+  &:hover {
+    background: linear-gradient(90deg, #95d5b2 0%, #74c69d 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(120, 200, 180, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.error {
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.lastSaved {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.editor {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  min-height: 500px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+  :global {
+    .w-md-editor {
+      background-color: #fff;
+      width: 100% !important;
+      min-width: 0;
+    }
+
+    .w-md-editor-text-pre > code,
+    .w-md-editor-text-input {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3a5a40;
+    }
+
+    .w-md-editor-preview {
+      background-color: #fff;
+      padding: 1.5rem;
+      color: #3a5a40;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .editor {
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .editor {
+    min-height: 320px;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.success {
+  padding: 0.75rem;
+  background-color: #e0ffe0;
+  color: #207520;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.backButton {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #3a5a40;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: #f8fafc;
+
+  &:hover {
+    color: #2d4a32;
+    background-color: #f1f5f9;
+    text-decoration: none;
+  }
+}
+
+.calendarIcon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.2rem;
+  opacity: 0.18;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarIcon:hover,
+.calendarIcon:focus {
+  opacity: 0.85;
+  transform: scale(1.08);
+} 

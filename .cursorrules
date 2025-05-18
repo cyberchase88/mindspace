@@ -1,0 +1,140 @@
+{
+  "editor": {
+    "formatOnSave": true,
+    "formatOnPaste": true,
+    "tabSize": 2,
+    "insertSpaces": true,
+    "trimTrailingWhitespace": true,
+    "insertFinalNewline": true,
+    "wordWrap": "on",
+    "rulers": [100],
+    "autoSave": "afterDelay",
+    "autoSaveDelay": 100,
+    "maxFileLength": 500,
+    "defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files": {
+    "exclude": {
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true,
+      "**/build": true
+    },
+    "associations": {
+      "*.js": "javascriptreact",
+      "*.jsx": "javascriptreact",
+      "*.scss": "scss",
+      "*.css": "css"
+    },
+    "autoSave": "afterDelay",
+    "autoSaveDelay": 100
+  },
+  "javascript": {
+    "format": {
+      "semicolons": "insert",
+      "quotes": "single",
+      "bracketSpacing": true,
+      "arrowParens": "always"
+    },
+    "suggest": {
+      "completeFunctionCalls": true,
+      "autoImports": true
+    },
+    "updateImportsOnFileMove": "always"
+  },
+  "typescript": {
+    "suggest": {
+      "completeFunctionCalls": true,
+      "autoImports": true
+    }
+  },
+  "git": {
+    "autofetch": true,
+    "confirmSync": false,
+    "enableSmartCommit": true,
+    "branchNaming": "kebab-case"
+  },
+  "workbench": {
+    "editor": {
+      "enablePreview": false,
+      "enablePreviewFromQuickOpen": false
+    },
+    "colorTheme": "Default Dark+",
+    "iconTheme": "material-icon-theme"
+  },
+  "ai": {
+    "enableCodeCompletion": true,
+    "enableDocumentation": true,
+    "contextWindowSize": "large",
+    "autoGenerateComments": true
+  },
+  "debug": {
+    "console": {
+      "fontSize": 14,
+      "lineHeight": 1.5
+    },
+    "javascript": {
+      "autoAttachFilter": "smart"
+    }
+  },
+  "terminal": {
+    "integrated": {
+      "fontSize": 14,
+      "lineHeight": 1.5
+    }
+  },
+  "search": {
+    "exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true,
+      "**/build": true
+    }
+  },
+  "zenMode": {
+    "hideTabs": true,
+    "hideStatusBar": true,
+    "hideLineNumbers": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.snippetSuggestions": "top",
+  "editor.wordBasedSuggestions": "matchingDocuments",
+  "editor.parameterHints": {
+    "enabled": true,
+    "cycle": true
+  },
+  "css": {
+    "validate": true,
+    "lint": {
+      "compatibleVendorPrefixes": "warning",
+      "vendorPrefix": "warning",
+      "duplicateProperties": "warning",
+      "emptyRules": "warning",
+      "importStatement": "warning",
+      "boxModel": "warning",
+      "universalSelector": "warning",
+      "zeroUnits": "warning",
+      "fontFaceProperties": "warning",
+      "hexColorLength": "warning",
+      "argumentsInColorFunction": "warning",
+      "unknownProperties": "warning",
+      "ieHack": "warning",
+      "unknownVendorSpecificProperties": "warning",
+      "propertyIgnoredDueToDisplay": "warning",
+      "important": "warning",
+      "float": "warning",
+      "idSelector": "warning"
+    }
+  }
+}

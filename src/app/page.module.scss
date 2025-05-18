@@ -1,0 +1,83 @@
+.homePage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 0;
+  /* Soft dawn sky gradient */
+  background: linear-gradient(135deg, #e0f7fa 0%, #fceabb 100%);
+  font-family: 'Nunito', 'Geist', Arial, sans-serif;
+}
+
+.gardenHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 2rem 0 1rem 0;
+  border-radius: 24px;
+  /* background: rgba(255,255,255,0.55); */
+  box-shadow: 0 4px 24px 0 rgba(120,200,180,0.08);
+  animation: floatIn 1.2s ease-out;
+}
+
+.gardenHeader h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3a5a40;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+.gardenSubhead {
+  font-size: 1.25rem;
+  color: #5e7c6a;
+  font-weight: 400;
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: inherit;
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+.leafBackground {
+  position: fixed;
+  left: 2vw;
+  bottom: 2vh;
+  width: 80px;
+  height: 80px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  filter: blur(0.5px);
+  animation: leafDrift 18s linear infinite alternate;
+}
+
+@keyframes leafDrift {
+  0% {
+    transform: translateY(0) rotate(-10deg) scale(1);
+  }
+  100% {
+    transform: translateY(-20px) rotate(18deg) scale(1.08);
+  }
+} 

@@ -1,0 +1,44 @@
+.floatingButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(90deg, #b7e4c7 0%, #95d5b2 100%);
+  color: #207520;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 16px rgba(120, 200, 180, 0.18);
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  outline: none;
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #95d5b2 0%, #74c69d 100%);
+    box-shadow: 0 8px 24px rgba(120, 200, 180, 0.25);
+    transform: translateY(-2px) scale(1.04);
+  }
+  .icon {
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+  }
+  .text {
+    display: inline;
+  }
+}
+
+@media (max-width: 600px) {
+  .floatingButton {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    .text {
+      display: none;
+    }
+  }
+} 
