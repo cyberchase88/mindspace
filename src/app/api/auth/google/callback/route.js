@@ -5,13 +5,21 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const code = searchParams.get('code');
-    // Extract userId from state param
-    let userId;
+    // Extract userId and returnTo from state param
+    let userId, returnTo;
     try {
       const state = searchParams.get('state');
-      userId = state ? JSON.parse(state).userId : null;
+      if (state) {
+        const parsed = JSON.parse(state);
+        userId = parsed.userId;
+        returnTo = parsed.returnTo;
+      } else {
+        userId = null;
+        returnTo = null;
+      }
     } catch {
       userId = null;
+      returnTo = null;
     }
     if (!userId) {
       return new Response(JSON.stringify({ error: 'Missing userId in state' }), { status: 400 });
@@ -42,8 +50,10 @@ export async function GET(req) {
     } catch (err) {
       return new Response(JSON.stringify({ error: 'Failed to store tokens', details: err.message }), { status: 500 });
     }
-    // Redirect to your app (e.g., settings page)
-    return Response.redirect('http://localhost:3000/settings?connected=google', 302);
+    // Instead of fetching email, just use a placeholder
+    const email = 'connected';
+    // Redirect to your app (e.g., settings page) with a generic success
+    return Response.redirect(`http://localhost:3000/settings?connected=google&email=${encodeURIComponent(email)}${returnTo ? `&returnTo=${encodeURIComponent(returnTo)}` : ''}` , 302);
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Unexpected error', details: err.message }), { status: 500 });
   }
