@@ -7,17 +7,6 @@
                 "--package=task-master-ai",
                 "task-master-ai"
             ],
-            "env": {
-                "ANTHROPIC_API_KEY": "ANTHROPIC_API_KEY=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",
-                "PERPLEXITY_API_KEY": "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",
-                "OPENAI_API_KEY": "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",
-                "GOOGLE_API_KEY": "GOOGLE_API_KEY_HERE",
-                "XAI_API_KEY": "XAI_API_KEY_HERE",
-                "OPENROUTER_API_KEY": "OPENROUTER_API_KEY_HERE",
-                "MISTRAL_API_KEY": "MISTRAL_API_KEY_HERE",
-                "AZURE_OPENAI_API_KEY": "AZURE_OPENAI_API_KEY_HERE",
-                "OLLAMA_API_KEY": "OLLAMA_API_KEY_HERE"
-            }
         }
     }
 }
