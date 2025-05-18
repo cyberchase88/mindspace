@@ -61,3 +61,11 @@ node_modules/
 # Task files
 tasks.json
 tasks/ 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# Added by Claude Task Master
+# Cursor MCP file
+.cursor/mcp.json
