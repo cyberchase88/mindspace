@@ -82,12 +82,11 @@ Capture and reflect
 - Note editor with Markdown
 - AI Chat assistant (collapsible)
 - Supabase-based storage
-- "Remember this" toggle (for the active recall + spaced repetition features — AI will generate these questions)
 
-**Phase 2: Memory Garden**  
+**Phase 2: Memory Garden**
+- "Remember this" toggle (for the active recall + spaced repetition features — AI will generate these questions)
 - Review screen w/ spaced recall
-- Link notes manually
-- Auto-suggest related notes
+- Link notes
 
 **Phase 3: Visualization + Taking Action**  
 - Actionable tasks/habits from notes
