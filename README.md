@@ -93,11 +93,12 @@ Capture and reflect
 - Calendar integration
 - Graph visualization of Zettelkasten links
 
-## 🐳 Run Locally
+## Run Locally
 ```bash
 npm install
 npm run dev
 ```
+
 
 
 ## 🤝 Contributing
