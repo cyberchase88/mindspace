@@ -38,16 +38,16 @@ Run Mindspace on your machine by following these steps:
 
 ---
 
-Mindspace is a gentle, joyful space to grow your thinking. It's like Obsidian meets Anki meets ChatGPT meets Calm/Headspace — a calming companion for learning, remembering, and integrating ideas into your life, and also a space to immerse yourself in your thoughts/feelings/insights.
+## 🌟 Why Mindspace?
+Because you’re not just learning — you’re building a relationship with your mind.
+Mindspace helps you slow down, reflect, and remember — in a way that feels like you. No pressure. No noise. Just the right mix of structure and wonder, so what matters actually sticks.
+
+This is a gentle, joyful space to grow your thinking. It's like Obsidian meets Anki meets ChatGPT meets Calm/Headspace — a calming companion for learning, remembering, and integrating ideas into your life, and also a space to immerse yourself in your thoughts/feelings/insights.
 
 Whether you're exploring a book, working through an idea, or building a new habit, Mindspace helps you:
 - 🌱 Capture ideas in connected notes
 - 🧠 Understand and retain them through strategies proven to accelerate learning (e.g., active recall and spaced repetition)
 - 🔄 Take insights and truly integrate them into your life through real-life tasks or reminders
-
-## 🌟 Why Mindspace?
-Because you’re not just learning — you’re building a relationship with your mind.
-Mindspace helps you slow down, reflect, and remember — in a way that feels like you. No pressure. No noise. Just the right mix of structure and wonder, so what matters actually sticks.
 
 ## 🛠 Tech Stack Details
 - **Frontend**: 
