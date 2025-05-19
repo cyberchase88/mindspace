@@ -67,7 +67,7 @@ Whether you're exploring a book, working through an idea, or building a new habi
   - Supabase (PostgreSQL)
   - Supabase Storage for file attachments
   - Supabase Realtime for live updates
-- **Development**:
+- **Dev Tools & Code Quality**:
   - Jest + React Testing Library
   - ESLint + Prettier
   - Husky for git hooks
