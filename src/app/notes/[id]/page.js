@@ -252,12 +252,23 @@ export default function NoteDetailPage() {
           {/* Subtle calendar icon, always visible */}
           <span
             className={styles.calendarIcon}
-            title="Add to Google Calendar"
-            onClick={() => setModalOpen(true)}
+            title={isGoogleConnected() ? "Add to Google Calendar" : "Connect Google Account"}
+            onClick={() => {
+              if (!isGoogleConnected()) {
+                alert('Please connect your Google account in Settings before adding events.');
+                window.location.href = `/settings?returnTo=${encodeURIComponent(window.location.pathname)}`;
+                return;
+              }
+              setModalOpen(true);
+            }}
             tabIndex={0}
             role="button"
             aria-label="Add to Google Calendar"
-            style={{ position: 'absolute', top: 24, right: 32, zIndex: 2 }}
+            style={{
+              position: 'absolute', top: 24, right: 32, zIndex: 2,
+              opacity: isGoogleConnected() ? 1 : 0.5,
+              cursor: isGoogleConnected() ? 'pointer' : 'not-allowed'
+            }}
           >
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="3" y="5" width="14" height="12" rx="2" fill="#588157" fillOpacity="0.18"/>
@@ -325,6 +336,11 @@ export default function NoteDetailPage() {
           onClose={() => setModalOpen(false)}
           onConfirm={async ({ title, date, time, recurrence }) => {
             setModalOpen(false);
+            if (typeof window !== 'undefined' && !window.sessionStorage.getItem('googleEmail')) {
+              alert('Please connect your Google account before adding events.');
+              window.location.href = `/settings?returnTo=${encodeURIComponent(window.location.pathname)}`;
+              return;
+            }
             const result = await addEventToGoogleCalendar({
               userId: getStaticUserId(),
               title,
@@ -405,4 +421,9 @@ function SRForecast({ spacedRepetition }) {
       </div>
     </div>
   );
+}
+
+function isGoogleConnected() {
+  if (typeof window === 'undefined') return false;
+  return !!window.sessionStorage.getItem('googleEmail');
 } 

@@ -111,6 +111,11 @@ export default function CardView() {
         onClose={() => setModalOpen(false)}
         onConfirm={async ({ title, date, time, recurrence }) => {
           setModalOpen(false);
+          if (typeof window !== 'undefined' && !window.sessionStorage.getItem('googleEmail')) {
+            alert('Please connect your Google account before adding events.');
+            window.location.href = `/settings?returnTo=${encodeURIComponent(window.location.pathname)}`;
+            return;
+          }
           const result = await addEventToGoogleCalendar({
             userId: HARDCODED_USER_ID,
             title,

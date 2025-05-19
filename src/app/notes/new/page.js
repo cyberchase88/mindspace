@@ -279,6 +279,31 @@ export default function NewNotePage() {
           />
         </div>
       </div>
+      <CalendarEventModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={async ({ title, date, time, recurrence }) => {
+          setModalOpen(false);
+          if (typeof window !== 'undefined' && !window.sessionStorage.getItem('googleEmail')) {
+            alert('Please connect your Google account before adding events.');
+            window.location.href = `/settings?returnTo=${encodeURIComponent(window.location.pathname)}`;
+            return;
+          }
+          const result = await addEventToGoogleCalendar({
+            userId: require('@/lib/supabase').getStaticUserId(),
+            title,
+            date,
+            time,
+            recurrence,
+            description: '',
+          });
+          if (result && result.error) {
+            alert('Error: ' + result.error);
+          } else {
+            alert('Event added to Google Calendar!');
+          }
+        }}
+      />
     </div>
   );
 } 

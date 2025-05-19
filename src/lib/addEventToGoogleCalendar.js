@@ -34,7 +34,8 @@ export async function addEventToGoogleCalendar({ userId, title, date, time, recu
       else if (recurrence === 'tue_thu') rule = 'RRULE:FREQ=WEEKLY;BYDAY=TU,TH';
       if (rule) event.recurrence = [rule];
     }
-    const calendarId = 'c4740f2d8d4adda8f155f64853659f440f6d6dbb1f3b7c83056d3cfef250a454@group.calendar.google.com';
+    // Always use 'primary' as the calendarId
+    const calendarId = 'primary';
     const res = await fetch('/api/calendar/app-event', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -15,7 +15,8 @@ export default function AddToGoogleCalendarButton({
 
   const handleAdd = () => {
     if (!isGoogleConnected) {
-      window.location.href = '/api/auth/google';
+      alert('Please connect your Google account before adding events.');
+      window.location.href = '/settings?returnTo=' + encodeURIComponent(window.location.pathname);
       return;
     }
     setModalOpen(true);
@@ -59,7 +60,7 @@ export default function AddToGoogleCalendarButton({
         else if (recurrence === 'tue_thu') rule = 'RRULE:FREQ=WEEKLY;BYDAY=TU,TH';
         if (rule) event.recurrence = [rule];
       }
-      const calendarId = 'c4740f2d8d4adda8f155f64853659f440f6d6dbb1f3b7c83056d3cfef250a454@group.calendar.google.com';
+      const calendarId = (typeof window !== 'undefined' && window.sessionStorage.getItem('googleEmail')) || 'primary';
       const res = await fetch('/api/calendar/app-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
