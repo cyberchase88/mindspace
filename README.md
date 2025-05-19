@@ -33,7 +33,7 @@ Run Mindspace on your machine by following these steps:
 
 4. **Run the development server**
    ```bash
-   npm run dev
+   PORT=3000 npm run dev
    ```
 
 5. **Open your browser**
